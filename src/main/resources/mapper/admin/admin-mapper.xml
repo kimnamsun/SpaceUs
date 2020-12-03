@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+
+	<!-- member List 관리  -->
+	<select id="selectList" resultMap="memberMap">
+		select
+		    M.member_email,
+		    M.nickname,
+		    M.member_phone,
+		    M.member_regdate,
+		    A.authority
+		from 
+		    member M join auth A
+		            on M.member_email = A.member_email
+	</select>
+	<resultMap type="manageMember" id="memberMap"></resultMap>
+	
+	<!-- member totalCnt 출력-->
+	<select id="selectTotalCnt" resultType="_int">
+		select
+			count(*)
+		from
+			member
+	</select>
+	
+	<!-- user Id로  memberList 출력-->
+	<select id="findUserIdList" resultMap="memberMap">
+		select
+		    M.member_email,
+		    M.nickname,
+		    M.member_phone,
+		    M.member_regdate,
+		    A.authority
+		from 
+		    member M join auth A
+		            on M.member_email = A.member_email
+		where
+			M.member_email like '%' || #{searchKeyword} || '%'
+	</select>
+	
+	<!-- user Id로  cnt 출력-->
+	<select id="selectUserIdCnt">
+		select
+		    count(*)
+		from 
+		    member M join auth A
+		            on M.member_email = A.member_email
+		where
+			M.member_email like '%' || #{searchKeyword} || '%'
+	</select>
+	
+	<!-- user Name로 memberList 출력 -->
+	<select id="findUserNameList" resultMap="memberMap">
+		select
+		    M.member_email,
+		    M.nickname,
+		    M.member_phone,
+		    M.member_regdate,
+		    A.authority
+		from 
+		    member M join auth A
+		            on M.member_email = A.member_email
+		where
+			M.nickname like '%' || #{searchKeyword} || '%'
+	</select>
+	
+	<!-- user Name로 cnt 출력 -->
+	<select id="selectUserNameCnt">
+		select
+		    count(*)
+		from 
+		    member M join auth A
+		            on M.member_email = A.member_email
+		where
+			M.nickname like '%' || #{searchKeyword} || '%'
+	</select>
+	
+	<!-- user Role로 memberList 출력 -->
+	<select id="findUserRoleList" resultMap="memberMap">
+		select
+		    M.member_email,
+		    M.nickname,
+		    M.member_phone,
+		    M.member_regdate,
+		    A.authority
+		from 
+		    member M join auth A
+		            on M.member_email = A.member_email
+		where
+			A.authority = #{searchKeyword}
+	</select>
+	
+	<!-- user Role로 memberList 출력 -->
+	<select id="selectUserRoleCnt" resultType="_int">
+		select
+		   count(*)
+		from 
+		    member M join auth A
+		            on M.member_email = A.member_email
+		where
+			A.authority = #{searchKeyword}
+	</select>
+	
+	
+	<!-- blackList group -->
+	<select id="selectGroupList" resultMap="manageBlackListMap">
+		select
+			*
+		from
+			blacklist
+		where 
+			board_type='G'
+		order by blackList_date desc
+	</select>
+	<!-- blackList recruit -->
+	<select id="selectRecruitList" resultMap="manageBlackListMap">
+		select
+			*
+		from
+			blacklist
+		where 
+			board_type='R'
+		order by blackList_date desc
+	</select>
+	<resultMap type="manageBlackList" id="manageBlackListMap"></resultMap>
+	
+	<!-- blackList status -->
+	<select id="selectGBList" resultMap="manageGroupBoardMap">
+		select
+			group_board_no
+		from
+			group_board
+	</select>
+	<resultMap type="manageGroupBoard" id="manageGroupBoardMap"></resultMap>
+	
+	<select id="selectrList" resultMap="recruitMap">
+		select
+			recruit_no
+		from
+			recruit
+	</select>
+	<resultMap type="manageRecruit" id="recruitMap"></resultMap>
+	
+	<!-- blackList reason -->
+	<select id="selectReasonList" resultMap="reportMap">
+		select
+			*
+		from
+			report
+		where 
+			board_no=#{reportBoardNo}
+	</select>
+	<resultMap type="report" id="reportMap"></resultMap>
+	
+	<!-- space Manage -->
+	<select id="selectSpceList" resultMap="manageSpaceMap">
+		select
+		    *
+		from(
+		    select 
+		        S.space_no,
+		        SI.renamed_filename,
+		        S.space_name,
+		        S.status,
+		        S.registration_date,
+		        rank()over(partition by S.space_no order by SI.renamed_filename) as rnum,
+		        S.member_email
+		    from 
+		        space S join auth A
+		                    on S.member_email = A.member_email
+		                left join space_image SI
+		                    on S.space_no = SI.space_no
+		    where
+		        A.authority = 'ROLE_USER' and S.status = 'S'
+		    )
+		where rnum = 1
+	</select>
+	<resultMap type="manageSpace" id="manageSpaceMap"></resultMap>
+	
+	<!-- confirm Space -->
+	<select id="selectSpaceOneList" resultMap="confirmSpaceMap">
+		select
+		    *
+		from
+		    space
+		where 
+		    space_no = #{spaceNo}
+	</select>
+	<resultMap type="confirmSpace" id="confirmSpaceMap"></resultMap>
+	
+	<select id="selectSpaceOneImageList" resultMap="attachmentMap">
+		select 
+		    renamed_filename,
+		    space_no
+		from 
+		    space_image
+		where 
+		    space_no = #{spaceNo}		
+	</select>
+	<resultMap type="confirmSpaceImage" id="attachmentMap"></resultMap>
+	
+	<select id="selectSpaceOneCategory" resultMap="categoryMap">
+		select 
+		    space_no,
+		    category_no,
+		    category_name
+		from
+		    space join category
+		                using(category_no)
+		where 
+		    space_no = #{spaceNo}
+	</select>
+	<resultMap type="category" id="categoryMap"></resultMap>
+	
+	<select id="selectSpaceOneTagList" resultMap="tagMap">
+		select 
+		    * 
+		from 
+		    space_tag join tag
+		        using(tag_no)
+		where
+		    space_no = #{spaceNo}
+	</select>
+	<resultMap type="confirmSpaceTag" id="tagMap"></resultMap>
+	
+	<select id="selectSpaceOptionList" resultMap="optionMap">
+		select 
+		    * 
+		from 
+		    space_option join option_list
+		        using(option_no)
+		where
+		    space_no = #{spaceNo}
+	</select>
+	<resultMap type="confirmSpaceOption" id="optionMap"></resultMap>
+	
+	<!-- confirm space -->
+	<update id="updateStatus">
+		update
+			space
+		set
+			status = 'O'
+		where
+			space_no = #{spaceNo}
+	</update>
+	
+	<update id="updateHost">
+		update
+			auth
+		set
+			authority = 'ROLE_HOST'
+		where
+			member_email = #{memberEmail}
+	</update>
+</mapper>

@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="space">
+	<!-- Tag -->
+	<select id="selectOneTag" resultMap="tagMap">
+		select 
+			*
+		from 
+			tag
+		where 
+			tag_name = '#'||#{ hashTag }
+	</select>
+	<resultMap type="tag" id="tagMap">
+		<id column="tag_no" property="no"/>
+		<result column="tag_name" property="tag"/>
+	</resultMap>
+
+ 	<insert id="insertHashTag">
+		insert into 
+			tag 
+		values(
+			'TAG'||seq_tag_no.nextval, 
+			'#'||#{hashTag}
+		)
+	</insert>
+      
+<!-- space -->
+	<select id="selectAll" resultMap="spaceMap">
+		select
+			*
+		from space
+	</select>
+
+	<select id="selectOneSpaceNum" resultMap="spaceMap">
+		select 
+            *
+		from(
+		    select
+		        *
+		    from
+		        space join space_image using (space_no) 
+		    where 
+		         space_no= #{spaceNo}
+		    order by
+		        upload_date )
+		 
+	</select>
+
+	<select id="selectOneSpace" resultMap="spaceMap">
+		select 
+			*
+		from 
+			space
+		where 
+			business_license = #{ businessNo }
+	</select>
+	<resultMap type="space" id="spaceMap">
+		<id column="space_no" property="spaceNo"  jdbcType="VARCHAR" javaType="string"/>
+		<result column="category_no" property="categoryNo"/>
+		<result column="member_email" property="memberEmail"/>
+		<result column="business_license" property="businessNo"/>
+		<result column="space_name" property="spaceName"/>
+		<result column="address" property="address"/>
+		<result column="space_phone" property="spacePhone"/>
+		<result column="hourly_price" property="hourlyPrice"/>
+		<result column="star_avg" property="starAvg"/>
+		<result column="enroll_date" property="enrollDate"/>
+		<result column="modification_date" property="modificationDate"/>
+		<result column="views" property="views"/>
+		<result column="like_cnt" property="likeCnt"/>
+		<result column="status" property="status"/>
+		<result column="account" property="account"/>
+		<result column="content" property="content"/>
+		<result column="bank" property="bank"/>
+		<result column="renamed_filename" property="rname"/>
+		<result column="rev_no" property="revNo"  jdbcType="VARCHAR" javaType="string"/>
+		<result column="review_no" property="reviewNo"/>
+		<result column="star_rating" property="starRating"/>
+		<result column="review_content" property="reviewContent"/>		
+		<result column="review_comment" property="reviewComment"/>		
+		<result column="review_cnt" property="reviewCnt"/>		
+		<collection property="attachList" ofType="Attachment">
+			<id column="file_no" property="fileNo"/>
+			<result column="space_no" property="spaceNo"/>
+			<result column="original_filename" property="oname" jdbcType="VARCHAR" javaType="string"/>
+			<result column="renamed_filename" property="rname" jdbcType="VARCHAR" javaType="string"/>
+			<result column="upload_date" property="uploadDate"/>
+		</collection>
+	</resultMap>
+	
+	<select resultMap="tagMap" id="selectListSpaceTag">
+		select
+			*
+		from
+			tag T join space_tag ST
+			using(tag_no)
+		where ST.space_no = #{ spaceNo } 
+	</select>
+	
+	<insert id="insertReview">
+		insert into
+			review (
+				review_no,
+				space_no,
+				rev_no,
+				nickname,
+				star_rating,
+				review_content
+			)
+		values (
+			'REVIEW'||seq_review_no.nextval,
+			#{ spaceNo },
+			#{ revNo },
+			#{ nickName },
+			#{ starRating },
+			#{ content }
+		)
+		 <selectKey keyProperty="reviewNo" resultType="string" order="AFTER">
+			select
+				'REVIEW'||seq_review_no.currval
+			from 
+				dual
+		</selectKey> 
+	
+	</insert>
+	
+	<resultMap type="wish" id="wishMap">
+		<id column="space_no" property="spaceNo"/>
+		<id column="member_email" property="email"/>
+		<result column="like_date" property="date"/>
+	</resultMap>
+	
+	<select id="selectLikeCnt" resultType="_int">
+		select 
+			count(*)
+		from
+		 	wish
+		where 
+			space_no=#{spaceNo}
+	</select>
+	
+	<insert id="insertWish">
+		insert into wish values(
+			#{spaceNo},
+			#{email},
+			sysdate
+		)
+		
+	</insert>
+	
+	<delete id="deleteWish">
+		delete
+		from
+			wish
+		where
+			space_no=#{spaceNo} and
+			member_email=#{email}
+	</delete>
+
+	<update id="minusLikeCnt">
+		update
+		space
+		set
+			like_cnt=like_cnt-1
+		where
+			space_no=#{spaceNo}
+		
+	</update>
+
+	<insert id="insertReviewAttahment">
+		insert into
+			review_image (
+				re_img_no,
+				review_no,
+				re_original_filename,
+				re_renamed_filename
+			)
+		values (
+			'REIMG'||seq_review_image_no.nextval,
+			#{ reviewNo },
+			#{ oName },
+			#{ rName }
+		)
+	</insert>
+
+	<select resultMap="reviewMap" id="selectListReview">
+		select
+			R.*,
+			(select re_renamed_filename  from review_image where review_no=R.review_no) image
+		from
+			review R
+		where space_no = #{ spaceNo } 
+		order by R.review_date desc
+	</select>
+	
+	<resultMap type="review" id="reviewMap">
+		<id column="review_no" property="reviewNo"/>
+		<result column="space_no" property="spaceNo"/>
+		<result column="rev_no" property="revNo"/>
+		<result column="nickname" property="nickName"/>
+		<result column="review_comment" property="reviewComment"/>
+		<result column="star_rating" property="starRating"/>
+		<result column="review_content" property="content"/>
+		<result column="review_date" property="enrollDate"/>
+		<result column="image" property="image"/>
+		<result column="star1" property="star1"/>
+		<result column="star2" property="star2"/>
+		<result column="star3" property="star3"/>
+		<result column="star4" property="star4"/>
+		<result column="star5" property="star5"/>
+	</resultMap>
+	
+	<select id="selectReviewTotalContents" resultType="_int">
+	    select 
+	    	count(*) 
+	    from 
+	    	review
+	    where 
+	    	space_no = #{spaceNo} 	
+	</select>
+	
+	<select id="selectStar" resultType="star">
+		select 
+			count(case when star_rating=1 then 1 end) star1,
+			count(case when star_rating=2 then 1 end) star2,
+			count(case when star_rating=3 then 1 end) star3,
+			count(case when star_rating=4 then 1 end) star4,
+			count(case when star_rating=5 then 1 end) star5
+		from 
+			review
+		where space_no = #{spaceNo}
+	</select>
+	
+	<select id="selectOneSpaceNo" resultMap="spaceMap">
+		select 
+			*
+		from 
+			space
+		where 
+			member_email = #{ email }
+	</select>
+	
+	<update id="updateReviewComment">
+		update 
+			review
+		set
+			review_comment = #{content}
+		where
+			review_no = #{reviewNo}
+	</update>
+	
+	<select resultMap="reviewMap" id="selectReviewComment">
+		select
+			R.*,
+			(select re_renamed_filename  from review_image where review_no=R.review_no) image
+		from
+			review R
+		where 
+			space_no = #{ spaceNo }
+			and
+		 	review_comment is null
+		order by R.review_date desc
+	</select>
+	
+	
+<!-- select rownum, JJ.* from(
+select
+          S.space_no,
+          S.space_name, 
+          REGEXP_SUBSTR(address,'[^ ]+',1,3) as address,
+          S.hourly_price,
+          S.views,
+          S.like_cnt,
+          S.star_avg,
+          nvl((select count(*)over(partition by space_no)from review R where S.space_no = R.space_no),0) as review_cnt,
+            SI.renamed_filename
+      from 
+          space S join(
+                select space_no,renamed_filename 
+                from( select 
+                        S.space_no,
+                        SI.renamed_filename,
+                        rank()over(partition by S.space_no order by SI.renamed_filename) as rnum 
+                      from space S left join space_image SI 
+                                    on S.space_no = SI.space_no)
+                      where rnum=1
+            )SI
+                on S.space_no = SI.space_no
+      where S.status = 'O' and S.category_no=#{categoryNo} and S.space_no!=#{spaceNo}
+      order by s.like_cnt desc) JJ
+      where rownum between 1 and 6 -->
+	<select id="selectSameCategory" resultMap="spaceListMap">
+ 			select rownum, C.* from(
+            select 
+ 				  S.space_no,
+		          S.space_name, 
+		          REGEXP_SUBSTR(address,'[^ ]+',1,3) as address,
+		          S.hourly_price,
+		          S.views,
+		          S.like_cnt,
+		          S.star_avg,
+		          (select count(*) from review where space_no=S.space_no) as review_cnt,
+		          D.renamed_filename	
+			from
+				space S join (SELECT * FROM space_image S
+                    WHERE S.ROWID IN (SELECT MIN(ROWID)
+                    FROM space_image
+                    GROUP BY space_no)) D on S.space_no=D.space_no
+			where 
+				S.category_no=#{categoryNo} and S.space_no!=#{spaceNo}
+                and S.status='O'
+            order by
+				S.like_cnt asc) C
+                where rownum between 1 and 6
+	</select>
+	
+	<select id="selectCateName" resultType="string">
+		select 
+			category_name 
+		from space join category using(category_no)
+		where space_no=#{spaceNo}
+	</select>
+	
+	<insert id="insertSpace">
+		insert into
+			space (
+				space_no,
+				category_no,
+				member_email,
+				business_license,
+				space_name,
+				address,
+				space_phone,
+				hourly_price,
+				account,
+				bank,
+				content
+			)
+		values (
+			'space'||seq_space_no.nextval,
+			#{ categoryNo },
+			#{ memberEmail },
+			#{ businessNo },
+			#{ spaceName },
+			#{ address },
+			#{ spacePhone },
+			#{ hourlyPrice },
+			#{ account },
+			#{ bank },
+			#{ content }
+		)
+		
+		<selectKey keyProperty="spaceNo" resultType="string" order="AFTER">
+			select
+				'space'||seq_space_no.currval
+			from 
+				dual
+		</selectKey>
+	</insert>
+	
+	<insert id="insertAttachment">
+		insert into
+			space_image (
+				file_no,
+				space_no,
+				original_filename,
+				renamed_filename
+			)
+		values (
+			'SPIMG'||seq_space_image_no.nextval,
+			#{ spaceNo },
+			#{ oname },
+			#{ rname }
+		)
+	</insert>
+	
+<!-- option -->
+	<insert id="insertOption">
+		insert into
+			space_option 
+		values (
+			#{ spaceNo },
+			#{ optionNo }
+		)
+	</insert>
+	
+	<select id="selectOptionList" resultType="optionList">
+		select 
+			option_no, option_name
+		from 
+			option_list L join space_option O
+    		using(option_no)
+		where
+			O.space_no = #{ spaceNo }
+	</select>
+	
+	<insert id="insertSpaceTag">
+		insert into
+			space_tag 
+		values (
+			#{ spaceNo },
+			#{ tagNo }
+		)
+	</insert>
+	
+	<select id="selectReviewList" resultMap="spaceReviewMap">
+		select SS.* from(
+			select  row_number() over(partition by rev_no order by rev_date ) as RNUM, S.*
+			from(
+			    select
+			       *
+			    from
+			        space join space_image using (space_no) left outer join reservation using(space_no) left outer join review using(rev_no)
+			    where 
+			         reservation.member_email= #{memberEmail} ) S ) SS
+	     where rev_comple=1 and RNUM=1
+	     order by SS.rev_date desc
+	</select>
+	<resultMap type="space" id="spaceReviewMap">
+		<result column="space_no" property="spaceNo" />
+		<result column="category_no" property="categoryNo"/>
+		<result column="member_email" property="memberEmail"/>
+		<result column="business_license" property="businessNo"/>
+		<result column="space_name" property="spaceName"/>
+		<result column="address" property="address"/>
+		<result column="space_phone" property="spacePhone"/>
+		<result column="hourly_price" property="hourlyPrice"/>
+		<result column="star_avg" property="starAvg"/>
+		<result column="enroll_date" property="enrollDate"/>
+		<result column="modification_date" property="modificationDate"/>
+		<result column="views" property="views"/>
+		<result column="like_cnt" property="likeCnt"/>
+		<result column="status" property="status"/>
+		<result column="account" property="account"/>
+		<result column="content" property="content"/>
+		<result column="bank" property="bank"/>
+		<result column="renamed_filename" property="rname"/>
+		<result column="rev_no" property="revNo"  />
+		<result column="review_no" property="reviewNo"/>
+		<result column="star_rating" property="starRating"/>
+		<result column="review_content" property="reviewContent"/>		
+		<result column="review_comment" property="reviewComment"/>		
+		<result column="review_cnt" property="reviewCnt"/>		
+	</resultMap>
+	
+	<select id="selectReviewPossible" resultMap="spaceReviewMap">
+		select SS.* from(
+		    select  row_number() over(partition by rev_no order by rev_date ) as RNUM, S.*
+		    from(
+		        select
+		           *
+		        from
+		            space join space_image using (space_no) left outer join reservation using(space_no) left outer join review using(rev_no)
+		        where 
+		             reservation.member_email= #{email} and review_no is null  ) S ) SS
+		 where RNUM =1 and rev_comple=1
+		 order by SS.rev_date desc
+	</select>
+	
+	<select id="selectReviewComplete" resultMap="spaceReviewMap">
+		select SS.* from(
+		    select  row_number() over(partition by rev_no order by rev_date ) as RNUM, S.*
+		    from(
+		        select
+		           *
+		        from
+		            space join space_image using (space_no) left outer join reservation using(space_no) left outer join review using(rev_no)
+		        where 
+		             reservation.member_email= #{email} and review_no is not null  ) S ) SS
+		 where RNUM =1 and rev_comple=1
+		 order by SS.rev_date desc
+	</select>
+	
+	<update id="updateReview">
+		update 
+			review
+		set
+			star_rating = #{starRating},
+			review_content = #{content}
+		where
+			rev_no = #{revNo}
+	</update>
+	
+	<select resultMap="reviewMap" id="selectStarAvg">
+		select
+			*
+		from
+			review
+		where space_no = #{ spaceNo } 
+	</select>
+	
+	<update id="updateStarAvg">
+		update 
+			space
+		set
+			star_avg = #{starAvg}
+		where
+			space_no = #{spaceNo}
+	</update>
+	
+	<select id="selectOneWish" resultMap="wishMap">
+		select 
+			*
+		from 
+			wish
+		where
+			space_no=#{spaceNo} and
+			member_email=#{email}
+	</select>
+	
+	
+	<select id="selectPopularSpaces" resultMap="spaceListMap">
+		select
+			S.space_no,
+            S.category_no,
+            S.space_name,
+            REGEXP_SUBSTR(S.address,'[^ ]+',1,3) as address,
+            S.HOURLY_PRICE,
+            S.STAR_AVG,
+            S.LIKE_CNT,
+            S.STATUS,
+            (select count(*) from review where space_no=S.space_no) as review_cnt
+		from(		
+			select rownum, D.* from
+				(select 
+				    space_no, count(reservation.rev_no) cnt
+				from
+				    reservation
+				where
+				<![CDATA[
+				   to_char(rev_date, 'yyyy/mm/dd') <= to_char(sysdate, 'yyyy/mm/dd') and
+				     to_char(rev_date, 'yyyy/mm/dd') > to_char(sysdate-14, 'yyyy/mm/dd') 
+				]]>
+				group by space_no
+				order by cnt desc ) D
+				where rownum between 1 and 6
+				) R join space S on S.space_no= R.space_no
+		 where S.status='O'
+		
+	</select>
+		
+	<select id="selectRecentReviewList" resultMap="reviewMap">
+	    select 
+	        rownum, space_name,R.review_no, R.space_no, nickname, review_content, star_rating, review_date, re_reg_date, re_renamed_filename image
+		from(select 
+				*
+			from
+				review join review_image using (review_no)
+			order by 
+				review_date desc) R join space on R.space_no=space.space_no
+	        where rownum between 1 and 8 and space.status='O'
+	</select>
+	
+	<!-- autocomplete tag -->
+	<select id="selectAutoList" resultType="string">
+		select category_name
+		from category
+		where category_name like'%'|| #{value} ||'%'
+		union
+		select tag_name
+		from tag
+		where tag_name like'%'|| #{value} ||'%'
+		union
+		select option_name 
+		from option_list
+		where option_name like'%'|| #{value} ||'%'
+		union
+		select REGEXP_SUBSTR(address,'[^ ]+',1,3) as address
+		from space
+		where address like '%'|| #{value} ||'%'
+	</select>
+	
+	<!-- search Space -->
+	<select id="selectCategoryList" resultMap="categoryMap">
+		select 
+			* 
+		from 
+			category
+	</select>
+	<resultMap type="category" id="categoryMap"></resultMap>
+	
+	
+	<select id="selectOptionList1" resultMap="optionListMap">
+		select
+			*
+		from 
+			option_list
+	</select>
+	<resultMap type="optionList" id="optionListMap"></resultMap>
+	
+	<!-- searchSpace 시작 -->
+	
+	<!-- 입력값에 따른 spaceNo 가져오기 -->
+	<select id="selectSpaceNoList" resultType="string">
+		WITH TEMP_TABLE AS (
+		   SELECT address as name, space_no FROM space union all
+		   select category_name as name, space_no from category join space using(category_no) union all
+		   select option_name as name, space_no from space_option join option_list using(option_no) union all
+		   select tag_name as name, space_no from space_tag join tag using(tag_no)
+		)
+		SELECT space_no
+		   FROM TEMP_TABLE join space using(space_no) left join (select reviews , 
+		   																space_no from( 
+		   																				select ROW_NUMBER() OVER(partition by space_no ORDER BY space_no,reviews) row_num, 
+		   																						space_no, 
+		   																						reviews 
+		   																				from( select count(*)over(partition by space_no) as reviews, space_no from review )
+		   																				)
+		   														 where row_num =1
+		   														) using(space_no)
+		 WHERE name like '%' || #{keyword}  || '%'
+		 <if test="sort != null"> order by
+			<choose>
+				<when test="sort eq 'price'">hourly_price</when>
+				<when test="sort eq 'star'">star_avg desc</when>
+				<when test="sort eq 'review'">reviews desc nulls last</when>
+				<otherwise>space_name desc</otherwise>
+			</choose>
+		</if>
+		 
+	</select>
+	
+	<!-- spaceNo로 space 데이터 가져오기 -->
+	<select id="selectSearchSpaceList" resultMap="spaceListMap">
+		select
+				    S.space_no,
+				    S.space_name, 
+				    REGEXP_SUBSTR(address,'[^ ]+',1,3) as address,
+				    S.hourly_price,
+				    S.views,
+				    S.like_cnt,
+				    S.star_avg,
+				    (select reviews from( select ROW_NUMBER() OVER(partition by space_no ORDER BY space_no,reviews) row_num, space_no,reviews from( select count(*)over(partition by space_no) as reviews, space_no from review))where row_num =1 and space_no = #{searchSpace}) as review_cnt,
+		            SI.renamed_filename
+		from space S join(
+		                            select space_no,renamed_filename 
+		                            from( select 
+		                                    S.space_no,
+		                                    SI.renamed_filename,
+		                                    rank()over(partition by S.space_no order by SI.renamed_filename) as rnum 
+		                                  from space S left join space_image SI 
+		                                                on S.space_no = SI.space_no)
+		                                  where rnum=1
+		                        )SI on S.space_no = SI.space_no
+		where S.status = 'O' and S.space_no= #{searchSpace}			
+	</select>
+	<resultMap type="spaceList" id="spaceListMap"></resultMap>
+	
+	<!-- search Detail space_no가져오기 -->
+	<select id="selectSearchDetailSpaceNo" resultType="string">
+		select 
+            space_no
+		from
+		    (
+		        SELECT rank()over(partition by space_no order by OPTION_NO) as rnum,
+		                E.* 
+		        FROM (
+		                select * 
+		                from space left join space_option using(space_no) 
+                                   left join option_List using(option_no)
+                                   left join category using(category_no)
+                        <where>
+                        	<if test="option != ''">
+		                		option_name = #{option} 
+                        	</if>
+                        	<if test="category != ''">
+                            and category_name = #{category}
+                        	</if>
+                        	<if test="location != ''">
+                            and address like '%'|| #{location} ||'%'  
+                        	</if>
+                        </where>
+		              ) E
+		     )
+		group by space_no
+	</select>
+	<!-- searchSpace 끝-->
+	
+	<select id="selectPopularImage" resultMap="attachMap">
+		select 
+			* 
+		from 
+			(select * from space_image order by to_number(substr(file_no, 6))) 
+		where 
+			space_no=#{spaceNo} and rownum=1
+	</select>
+	<resultMap type="attachment" id="attachMap">
+		<id column="file_no" property="fileNo"/>
+		<result column="space_no" property="spaceNo"/>
+		<result column="original_filename" property="oname"/>
+		<result column="renamed_filename" property="rname"/>
+		<result column="upload_date" property="uploadDate"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+	<update id="increaseSpaceReadCnt">
+		update 
+			space
+		set
+			views = views + 1
+		where
+			space_no = #{spaceNo}
+	</update>
+	
+	<delete id="deleteOption">
+		delete
+		from
+			space_option
+		where
+			space_no=#{spaceNo}
+	</delete>
+	
+	<update id="updateStatus">
+		update 
+			space
+		set
+			status = #{status}
+		where
+			space_no = #{spaceNo}
+	</update>
+
+	<!-- 사용안하면 걍 지우기 호스트 페이지 리뷰 목록개수 -->
+	<select id="selectHostReviewTotalContents" resultType="_int">
+	    select
+			count(*)
+		from
+			review 
+		where 
+			space_no = #{ spaceNo }
+	</select>
+
+	<delete id="deleteSpace">
+		delete
+		from
+			space
+		where
+			space_no=#{spaceNo}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

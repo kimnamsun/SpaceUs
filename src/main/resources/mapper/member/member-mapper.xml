@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+<select id="selectOneMember" resultMap="memberMap">
+	select
+		* 
+	from
+		member
+	where
+		member_email = #{ memberEmail }
+</select>
+
+<select id="selectOneNickName" resultMap="memberMap">
+	select
+		* 
+	from
+		member
+	where
+		nickname = #{ nickName }
+</select>
+
+<select id="selectOnePhone" resultMap="memberMap">
+	select
+		* 
+	from
+		member
+	where
+		member_phone = #{ phone }
+</select>
+
+
+<insert id="insertMember">
+	insert all
+		into member values (
+			#{ memberEmail },
+			#{ nickName },
+			#{ password },
+			#{ memberPhone },
+			#{ birthDay },
+			default,
+			default,
+			default
+		)
+		into auth values (
+			#{ memberEmail },
+			default
+		)
+	select * from dual
+</insert>
+
+<update id="updatePassword">
+
+	update
+		member
+	set
+		password = #{ encryptedNewPassword }
+	where
+		member_email = #{ tomail }
+</update>
+
+<update id="updateStamp">
+	update
+		member
+	set
+		attendance_cnt = attendance_cnt + 1,
+		today = today +1
+	where
+		member_email = #{ email }
+</update>
+
+<update id="updateMember">
+	update
+		member
+	<set>
+      <if test="nickName != null">nickname = #{ nickName },</if>
+      <if test="memberPhone != null">member_phone = #{ memberPhone }</if>
+   </set>
+	where
+		member_email = #{ memberEmail }
+</update>
+
+<select id="selectBtdList" parameterType="string" resultMap="memberMap">
+	select
+		* 
+	from
+		member
+	where
+		birthday = to_date(#{ format }, 'MM/dd')
+</select>
+
+<resultMap type="member" id="memberMap">
+	<id column="member_email" property="memberEmail"/>
+	<result column="nickname" property="nickName"/>
+	<result column="password" property="password"/>
+	<result column="member_phone" property="memberPhone"/>
+	<result column="birthday" property="birthDay"/>
+	<result column="member_regdate" property="memberRegDate"/>
+	<result column="attendance_cnt" property="attendanceCnt"/>
+</resultMap>
+
+<update id="deleteAttendance">
+    update  
+    	member 
+    set 
+    	attendance_cnt = 0
+</update> 
+
+<delete id="deleteMember">
+    delete from 
+    	member
+    where 
+    	member_email = #{ memberEmail}
+</delete>
+
+<update id="updatePwd">
+	update
+		member
+	set
+		password = #{ password }
+	where
+		member_email = #{ memberEmail }
+</update>
+
+<insert id="insertBtdCoupon">
+	insert all
+    into coupon 
+    values(
+            'C'||seq_coupon_no.nextval,
+            'btd',
+            member_email,
+            0.3,
+            default,
+            sysdate+7,
+            default
+    )
+ 	select
+		member_email
+	from
+		member
+	where
+		birthday like '%%%%-'||(select to_char(sysdate, 'MM-dd') from dual)
+</insert>
+
+<update id="deleteToday">
+	update
+		member
+	set
+		today = 0
+</update>
+
+<insert id="insertAttend3Coupon">
+	insert all
+    into coupon
+    values(
+            'C'||seq_coupon_no.nextval,
+            'attend3',
+            member_email,
+            0.3,
+            default,
+            sysdate+7,
+            default
+    )
+	select member_email from member where attendance_cnt >=3
+</insert>
+
+<insert id="insertAttend2Coupon">
+	insert all
+    into coupon
+    values(
+            'C'||seq_coupon_no.nextval,
+            'attend2',
+            member_email,
+            0.2,
+            default,
+            sysdate+7,
+            default
+    )
+	select member_email from member <![CDATA[where attendance_cnt >=2 and attendance_cnt < 3]]> 
+</insert>
+
+<delete id="deleteCoupon">
+	delete from coupon where to_char(coupon_deadline) = to_date(sysdate, 'yy/MM/dd')
+</delete>
+
+<delete id="deleteCouponNo">
+	delete from coupon where coupon_no = #{couponNo}
+</delete>
+
+<select id="selectCouponList" resultMap="couponMap">
+	select
+		* 
+	from
+		coupon
+	where
+		member_email = #{ email }
+</select>
+<resultMap type="coupon" id="couponMap">
+	<id column="coupon_no" property="no"/>
+	<result column="coupon_type" property="type"/>
+	<result column="member_email" property="email"/>
+	<result column="discount_rate" property="discount"/>
+	<result column="coupon_issued_date" property="issuedDate"/>
+	<result column="coupon_deadline" property="deadLine"/>
+	<result column="coupon_status" property="status"/>
+</resultMap>
+
+<resultMap id="wishMap" type="wish">
+		<id column="space_no" property="spaceNo"/>
+		<id column="member_email" property="email"/>
+		<result column="like_date" property="date"/>
+		<result column="space_name" property="spaceName"/>
+		<result column="content" property="content"/>
+		<result column="star_avg" property="starAvg"/>
+		<result column="like_cnt" property="likeCnt"/>
+		<result column="address" property="address"/>
+		<result column="review_cnt" property="reviewCnt"/>
+		<result column="renamed_filename" property="image"/>
+		<result column="hourly_price" property="hourlyPrice"/>	
+<!-- 		<collection property="attachList" ofType="Attachment">
+				<id column="file_no" property="fileNo"/>
+				<result column="space_no" property="spaceNo"/>
+				<result column="original_filename" property="oName" jdbcType="VARCHAR" javaType="string"/>
+				<result column="renamed_filename" property="rName" jdbcType="VARCHAR" javaType="string"/>
+				<result column="upload_date" property="uploadDate"/>
+		</collection> -->
+</resultMap>
+
+<select id="selectWishList" resultMap="wishMap">
+		SELECT * FROM WISH JOIN (
+		select
+		          S.space_no,
+		          S.space_name, 
+		          REGEXP_SUBSTR(address,'[^ ]+',1,3) as address,
+		          S.hourly_price,
+		          S.views,
+		          S.content,
+		          S.like_cnt,
+		          S.star_avg,
+		         (select count(*) from review where space_no=S.space_no) as review_cnt,
+		            SI.renamed_filename
+		      from 
+		          space S join(
+		                select space_no,renamed_filename 
+		                from( select 
+		                        S.space_no,
+		                        SI.renamed_filename,
+		                        rank()over(partition by S.space_no order by SI.renamed_filename) as rnum 
+		                      from space S left join space_image SI 
+		                                    on S.space_no = SI.space_no)
+		                      where rnum=1
+		            )SI
+		                on S.space_no = SI.space_no
+		      where S.status = 'O') JJ ON JJ.space_no=wish.space_no
+		      where member_email=#{email}
+		      order by like_date desc
+
+</select>
+
+<select id="selectWishTotal" resultType="_int">
+	select
+		count(*)
+	from 
+		wish
+	where 
+		member_email = #{email}
+</select>
+
+<update id="updateUser">
+		update
+			auth
+		set
+			authority = 'ROLE_USER'
+		where
+			member_email = #{memberEmail}
+</update>
+
+</mapper>

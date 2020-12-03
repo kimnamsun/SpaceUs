@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="host">
+
+  <resultMap id="qnaMap" type="qna">
+  	<id column="qna_no" property="qnaNo" />
+  	<id column="space_no" property="spaceNo" />
+  	<id column="member_email" property="email" />
+  	<id column="nickname" property="name" />
+  	<id column="qna_content" property="content" />
+  	<id column="qna_answer" property="answer" />
+  	<id column="qna_date" property="date" />
+  	<id column="qna_status" property="status" javaType="java.lang.Boolean"/>
+  </resultMap>
+	
+  <select id="selectQuestionList" resultMap="qnaMap">
+	  	select 
+	        Q.qna_no, Q.space_no, Q.nickname, Q.qna_content, Q.qna_status, Q.qna_Date, Q.qna_answer, Q.member_email
+		from 
+		qna Q join space S
+		    on Q.space_no=S.space_no
+		where S.member_email=#{hostId}
+		order by
+			Q.qna_date desc
+  </select>
+
+  <select id="selectUnreplied" resultMap="qnaMap">
+	select 	
+		Q.*
+	from(	
+		select 
+            *
+		from 
+		qna join space 
+		    on qna.space_no=space.space_no
+		where space.member_email=#{hostId} and
+			qna_answer is null
+		order by
+			qna_date desc 
+			) Q
+	where rownum between 1 and 50
+  </select>
+  
+  <resultMap id="settlementMap" type="DailySale">
+  	<id column="daily_sale_no" property="saleNo" />
+  	<result column="settlement_date" property="date" />
+  	<result column="daily_total_hour" property="totalHour" />
+  	<result column="daily_revenue" property="revenue" />
+  </resultMap>
+  
+  <select id="selectSettlementList" resultMap= "settlementMap">
+  SELECT TO_CHAR(D.settlement_date, 'YYYY-MM-DD') AS settlement_date,
+               S.member_email, D.daily_revenue, d.daily_total_hour
+           FROM daily_sale D join space S on S.space_no=D.space_no 
+          WHERE D.settlement_date BETWEEN SYSDATE-30
+                             AND SYSDATE
+                AND S.member_email=#{hostId}
+          order by settlement_date asc
+  </select>
+  
+  <select id="selectReservationSpaceNo" resultType="string">
+	select 
+		space_no
+	from 
+		reservation 
+	where 
+		rev_cancle = 0  
+		and to_char(d_day) = to_char(sysdate-1) 
+	group by 
+		space_no
+  </select>
+  
+  <insert id="insertSettlement">
+	insert all
+	    into daily_sale
+	    values(
+	        'DAY'||seq_daily_sale_no.nextval,
+	        space_no,
+	        today,
+	        result,
+	        total
+	    )
+		select 
+			max(space_no) space_no, sum(column1-column2) as result, sum(total_price) as total, sysdate-1 as today
+		from (
+			select space_no, end_hour as column1, start_hour as column2, total_price
+			from reservation
+			where space_no=#{spaceNo} and to_char(d_day) = to_char(sysdate-1) and rev_cancle = 0
+		)
+  </insert>
+  
+  <insert id="insertMonthlySettlement">
+	insert all
+	    into monthly_sale
+	    values(
+	        'MONTH'||seq_monthly_sale_no.nextval,
+	        space_no,
+	        settlement_month,
+	        monthly_total_hour,
+	        monthly_revenue
+	    )        
+	    select 
+	    	max(space_no) space_no, sum(daily_total_hour) as monthly_total_hour, sum(daily_revenue) as monthly_revenue, to_char(sysdate, 'yy/mm') as settlement_month
+	    from 
+	    	daily_sale
+	    where 
+	    	space_no=#{spaceNo} and to_char(settlement_date, 'yy/mm') = to_char(sysdate, 'yy/mm')
+  </insert>
+
+  <insert id="insertYearlySettlement">
+	insert all
+       into yearly_sale
+       values(
+           'YEAR'||seq_yearly_sale_no.nextval,
+           space_no,
+           year,
+           year_total_hour,
+           year_total_sale
+       )        
+       select 
+          max(space_no) space_no, sum(monthly_revenue) as year_total_sale, sum(monthly_total_hour) as year_total_hour, to_char(sysdate, 'yyyy') as year
+       from 
+          monthly_sale
+       where 
+          space_no=#{spaceNo} and to_char(settlement_month, 'yy/mm') = to_char(sysdate, 'yy/mm')
+  </insert>
+  
+
+</mapper>

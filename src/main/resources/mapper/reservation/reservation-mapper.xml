@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reservation">
+<!-- avail -->
+	<select id="selectListAvail" resultType="reservationAvail">
+        select 
+			* 
+		from 
+			reservation_avail
+		where
+			space_no = #{ spaceNo }
+	</select>
+
+	<insert id="insertReservationVail">
+		insert into
+			reservation_avail 
+		values (
+			#{ day },
+			#{ spaceNo },
+			#{ startHour },
+			#{ endHour }
+		)
+	</insert>
+	
+	<delete id="deleteRevAvail">
+		delete
+		from
+			reservation_avail
+		where
+			space_no=#{spaceNo}
+	</delete>
+	
+<!-- reservation -->
+	<insert id="insertReservation">
+		insert into
+			reservation
+		values (
+			#{revNo},
+			#{ memberEmail },
+			#{ spaceNo },
+			sysdate,
+			#{ day },
+			#{ startHour },
+			#{ endHour },
+			#{ totalPrice },
+			default,
+			default,
+			#{ pay }
+		)
+	</insert>
+
+	<select id="selectListReservation" resultMap="reservationMap">
+        select 
+			* 
+		from 
+			reservation
+		where
+			member_email = #{ memberEmail }
+		order by rev_date desc
+	</select>
+	
+	<select id="ingReservation" resultMap="reservationMap">
+        select 
+			* 
+		from 
+			reservation
+		where
+			member_email = #{ email }
+			and
+			rev_cancle = rev_comple
+		order by rev_date desc
+	</select>
+	
+	<select id= "selectingReservationTotalCnt" resultType="_int">
+		select
+			count(*)
+		from
+			reservation
+		where
+			member_email = #{ email }
+			and
+			rev_cancle = rev_comple
+		order by rev_date desc
+			
+	</select>
+	
+	<select id="finishReservation" resultMap="reservationMap">
+        select 
+			* 
+		from 
+			reservation
+		where
+			member_email = #{ email }
+			and
+			rev_cancle != rev_comple
+		order by rev_date desc
+	</select>
+	
+	<resultMap type="reservation" id="reservationMap">
+		<id column="rev_no" property="revNo"/>
+		<result column="member_email" property="memberEmail"/>
+		<result column="space_no" property="spaceNo"/>
+		<result column="d_day" property="day"/>
+		<result column="rev_date" property="revDate"/>
+		<result column="start_hour" property="startHour"/>
+		<result column="end_hour" property="endHour"/>
+		<result column="total_price" property="totalPrice"/>
+		<result column="rev_cancle" property="revCancle"/>
+		<result column="rev_comple" property="revComplete"/>
+		<result column="member_phone" property="phone"/>
+		<result column="pay" property="pay"/>
+	</resultMap>
+
+	<update id="cancleReservation">
+		update
+			reservation
+		set
+			rev_cancle = 1
+		where
+			rev_no = #{ revNo }
+	</update>
+
+	<select id="selectHostReservationList" resultMap="reservationMap">
+        select 
+        	* 
+		from 
+			member join reservation using(member_email) 
+		where 
+			space_no=(select space_no from space where member_email = #{ memberEmail })
+		order by rev_date desc
+	</select>
+	
+	<select id="selectUseReservation" resultMap="reservationMap">
+        select 
+        	* 
+		from 
+			member join reservation using(member_email) 
+		where 
+			space_no=(select space_no from space where member_email = #{ memberEmail })
+		order by d_day desc
+	</select>
+	
+	<select id="hostSearchReservation" resultMap="reservationMap">
+        select 
+        	* 
+		from 
+			member join reservation using(member_email) 
+		where 
+			space_no=(select space_no from space where member_email = #{ hostEmail })
+			and member_email like '%'||#{ memberEmail }||'%'
+		order by rev_date desc
+	</select>
+	
+	<select id="selectHostRevTotalContents" resultType="_int">
+	    select 
+        	count(*) 
+		from 
+			member join reservation using(member_email) 
+		where 
+			space_no=(select space_no from space where member_email = #{ memberEmail })
+	</select>
+	
+	<!-- 페이징 처리 -->
+	<select id="reservationPaging" resultMap="reservationMap">
+		select
+			*
+		from
+			reservation
+		where 
+			member_email = #{memberEmail}
+		order by rev_date desc
+	</select>
+	
+	<select id="selectTotalCnt" resultType="_int">
+		select
+			count(*)
+		from 
+			reservation
+		where 
+			member_email = #{memberEmail}
+	</select>
+	
+	<select id="confirmReservation" resultType="_int">
+		select
+			count(*)
+		from 
+			reservation
+		where 
+			space_no = #{spaceNo}
+			AND
+			rev_cancle=rev_comple
+	</select>
+	
+	<select id="selectListReservationAvail" resultMap="reservationMap">
+		select 
+			* 
+		from 
+			reservation join reservation_avail using(space_no)
+		where 
+			space_no=#{spaceNo}
+	</select>
+	
+	<update id="updateComple">
+		update
+			reservation
+		set
+			rev_comple = 1
+		where
+			to_char(d_day) = to_date(sysdate-1, 'yy/MM/dd')
+	</update>
+
+	<select id="unselectableList" resultMap="unselectableMap">
+        select 
+        	d_day, start_hour, end_hour
+		from 
+			reservation
+		where 
+			space_no = #{spaceNo}
+		    and
+		    rev_cancle = rev_comple
+	</select>
+	
+	<resultMap type="unselectable" id="unselectableMap">
+		<result column="d_day" property="day"/>
+		<result column="rev_date" property="revDate"/>
+		<result column="start_hour" property="startHour"/>
+	</resultMap>
+	
+	<update id="updateRevNo">
+		update
+		reservation
+		set
+			rev_no=#{newRevNo}
+		where
+			rev_no=#{oldRevNo}
+		
+	</update>
+	
+	<delete id="deleteReservation">
+		delete
+		from
+			reservation
+		where
+			rev_no=#{revNo}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
