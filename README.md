@@ -1,5 +1,5 @@
 ## SpaceUs
-Team Project
+Team Project   
 2020.09.02 ~ 2020.10.23
 <br><br>
 ## Overview
