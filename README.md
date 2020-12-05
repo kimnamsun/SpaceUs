@@ -1,11 +1,10 @@
-
 ## SpaceUs
 Team Project
-
+<br><br>
 ## Overview
 사람과 사람을 연결하고 공간을 공유하는 공간공유 사이트 구축<br/>
 2020.09.02 ~ 2020.10.23
-
+<br><br>
 ## Skills
 * ![Github Badge](https://img.shields.io/badge/-JAVA-red)
 * ![Github Badge](https://img.shields.io/badge/-Spring-brightgree)
@@ -39,6 +38,6 @@ Team Project
 * 출석이벤트
 * 쿠폰
 * 정산내역 Excel 파일 다운로드
-
+<br><br>
 ## ERD
 ![erd](https://user-images.githubusercontent.com/66931820/97409160-8848b600-1940-11eb-953b-8f27d1c9120a.png)
