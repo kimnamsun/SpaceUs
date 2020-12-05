@@ -3,7 +3,7 @@ Team Project
 2020.09.02 ~ 2020.10.23
 <br><br>
 ## Overview
-사람과 사람을 연결하고 공간을 공유하는 공간공유 사이트 구축<br/>
+사람과 사람을 연결하고 공간을 공유하는 공간공유 사이트 구축
 <br><br>
 ## Skills
 * ![Github Badge](https://img.shields.io/badge/-JAVA-red)
