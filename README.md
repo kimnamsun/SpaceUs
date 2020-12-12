@@ -16,6 +16,12 @@ Team Project
 * ![Github Badge](https://img.shields.io/badge/-Git-black)
 * ![Github Badge](https://img.shields.io/badge/-AWS-F3F3F3)
 <br><br>
+## Menu
+* 메인 : 검색창과 공간추천
+* 공간등록
+* 기획전
+* 커뮤니티 : 소모임과 구인구직
+<br><br>
 ## User Type
 * 일반회원
 * 호스트회원
