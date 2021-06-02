@@ -50,7 +50,5 @@ public class ExhibitionDAOImpl implements ExhibitionDAO {
 	public List<ExhibitionTag> selectTagList() {
 		return sqlSession.selectList("exhibition.selectTagList");
 	}
-	
-	
 
 }

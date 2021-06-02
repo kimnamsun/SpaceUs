@@ -16,7 +16,7 @@ import com.kh.spaceus.community.group.model.vo.GroupBoard;
 
 @Repository
 public class GroupDAOImpl implements GroupDAO {
-	
+
 	@Autowired
 	private SqlSessionTemplate session;
 
@@ -28,9 +28,8 @@ public class GroupDAOImpl implements GroupDAO {
 	@Override
 	public List<GroupBoard> selectListGroupBoard(int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("board.selectListGroupBoard",null,rowBounds);
-	}	
-	
+		return session.selectList("board.selectListGroupBoard", null, rowBounds);
+	}
 
 	@Override
 	public List<GroupBoard> selectSortedListGroupBoard(Map<String, String> listMap, int limit, int offset) {
@@ -132,9 +131,4 @@ public class GroupDAOImpl implements GroupDAO {
 	public int updateReportCnt(String groupBoardCommentNo) {
 		return session.update("board.updateReportCnt", groupBoardCommentNo);
 	}
-
-	
-	
-	
-	
 }

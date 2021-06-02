@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8" />
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -19,9 +18,6 @@
 
         <div class="page-wrapper">
             <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
                         <h4 class="text-themecolor ml-5">마이페이지</h4>
@@ -36,7 +32,6 @@
                     </div>
                 </div>
                     
-                <!-- 이용내역 -->
                  <div id="usageHistoryPage" class="ml-5 mr-5">
                        <div class="card p-5">
                            <div class="card-body">
@@ -120,7 +115,6 @@
 		                                	</div>
 		                            	</div>
 		                            	
-		                            	<!-- confrim Modal -->
 										<div class="modal fade" id="confirmModal${ vs.index }" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										  <div class="modal-dialog">
 										    <div class="modal-content">
@@ -152,15 +146,9 @@
 										    </div>
 										  </div>
 										</div>
-										<!-- confirm modal 끝 -->
-										
-										<!-- cancel modal 시작 -->
-										<!-- Modal: modalPoll -->
 										<div class="modal fade" id="cancelModal${ vs.index }" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										  <div class="modal-dialog" role="document">
 										    <div class="modal-content">
-										     <%--   <form:form name="cancelReservation" id="cancelReservation" action="${pageContext.request.contextPath}/reservation/cancelReservation.do" method="POST">--%>	
-											      <!--Header-->
 											      <div class="modal-header">
 											        <p class="heading lead">예약 취소
 											        </p>
@@ -169,8 +157,6 @@
 											          <span aria-hidden="true" class="white-text">×</span>
 											        </button>
 											       </div>
-													<!-- /Header -->
-											       <!--Body-->
 											       <div class="modal-body">
 											       
 											         <div class="text-center">
@@ -179,11 +165,7 @@
 											             <strong>취소 사유를 선택해주세요</strong>
 											           </p>
 											         </div>
-											
 											         <hr>
-											
-											         <!-- Radio -->
-											      
 											         <div>
 												         <div class="form-check mb-4">
 												           <input class="form-check-input" name="reason" type="radio" id="reason" value="공간 대여 일정이 미뤄짐" checked="checked">
@@ -209,12 +191,9 @@
 												         </div>
 											         </div>
 											         
-											        <!-- /Radio -->
-											
 											        <p class="text-center">
 											          <strong>예약 무료 취소</strong>
 											        </p>
-											        <!-- table -->
 											        <table class="table table-borderless">
 											          <tbody>
 											            <tr>
@@ -238,10 +217,8 @@
 											            </tr>
 											          </tbody>
 											        </table>
-											        <!-- /table -->
 											      </div>
 											
-											      <!--Footer-->
 											      <div class="modal-footer justify-content-center">
 											        <a type="button" class="btn btn-warning waves-effect waves-light" style="color:darkblack;"
 											           id="refund" onclick="refund('${info.revNo}');">
@@ -250,12 +227,9 @@
 											        </a>
 											        <a type="button" class="btn btn-outline-link waves-effect" data-dismiss="modal">Cancel</a>
 											      </div>
-										    <%--   </form:form> --%>
 										    </div>
 										  </div>
 										</div>
-										<!-- Modal: modalPoll -->
-										<!-- cancel modal 끝 -->
 									</c:forEach>
 									</c:when>
 								<c:otherwise>
@@ -267,15 +241,12 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 페이징처리 시작 -->
             				<nav aria-label="Page navigation" style="display:inline text-align: center; margin-left: 45%;">
 							  <ul class="pagination" style="border:0; margin-right:10px;">
 							    ${pageBar}
 							  </ul>
 							</nav>
-						<!-- 페이징 처리 끝 -->
                     </div>
-              	<!-- 이용내역 끝 -->
     		</div>
 		</div>
 	</div>
@@ -283,7 +254,6 @@
 
 <script>
 
-//사용내역 모아보기
 $("#selectId").change(function(){
 	let option = $("#selectId").val();
 	if(option == 1) location.href="${pageContext.request.contextPath}/member/usageHistory.do";
@@ -291,26 +261,17 @@ $("#selectId").change(function(){
 	else location.href="${pageContext.request.contextPath }/member/usageFinish.do";
 });
 
-//예약취소
 function refund(revNo){
-	
 	window.location.href="${pageContext.request.contextPath}/reservation/cancelReservation.do?revNo="+revNo;
-	
 }
 </script>
 
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap popper Core JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/popper/popper.min.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/perfect-scrollbar.jquery.min.js"></script>
-<!--Wave Effects -->
 <script src="${ pageContext.request.contextPath }/resources/js/waves.js"></script>
-<!--Menu sidebar -->
 <script src="${ pageContext.request.contextPath }/resources/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/custom.min.js"></script>
-<!-- jQuery CDN --->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

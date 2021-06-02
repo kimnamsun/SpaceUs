@@ -1,77 +1,69 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8" />
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="" name="pageTitle" />
 </jsp:include>
 <jsp:include page="/WEB-INF/views/common/mypageMenu.jsp" />
 
 
-        <div class="page-wrapper">
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
-                <div class="row page-titles">
-                    <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor ml-5">마이페이지</h4>
-                    </div>
-                    <div class="col-md-7 align-self-center text-right">
-                        <div class="d-flex justify-content-end align-items-center mr-5">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0)">마이페이지</a></li>
-                                <li class="breadcrumb-item active">출석 체크</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" id="memberEmail" value="<sec:authentication property="principal.username"/>"/>
-                
-                <!-- 출석이벤트 달력 -->
-                <div id="calendar">
-				    <div id="calendar_header">
-				    	<i class="icon-chevron-left"></i>          
-					    <h1></h1>
-					    <i class="icon-chevron-right"></i>         
-				    </div>
-				    <div id="calendar_weekdays"></div>
-				    <div id="calendar_content"></div>
-			    </div>
-                <!-- 달력끝 -->
-    </div>
+<div class="page-wrapper">
+	<div class="container-fluid">
+		<div class="row page-titles">
+			<div class="col-md-5 align-self-center">
+				<h4 class="text-themecolor ml-5">마이페이지</h4>
+			</div>
+			<div class="col-md-7 align-self-center text-right">
+				<div class="d-flex justify-content-end align-items-center mr-5">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="javascript:void(0)">마이페이지</a></li>
+						<li class="breadcrumb-item active">출석 체크</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="memberEmail"
+			value="<sec:authentication property="principal.username"/>" />
+
+		<div id="calendar">
+			<div id="calendar_header">
+				<i class="icon-chevron-left"></i>
+				<h1></h1>
+				<i class="icon-chevron-right"></i>
+			</div>
+			<div id="calendar_weekdays"></div>
+			<div id="calendar_content"></div>
+		</div>
+	</div>
 </div>
 </div>
 </div>
 
 
-<script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
-<script src="${ pageContext.request.contextPath }/resources/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap popper Core JavaScript -->
-<script src="${ pageContext.request.contextPath }/resources/assets/node_modules/popper/popper.min.js"></script>
-<script src="${ pageContext.request.contextPath }/resources/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
-<script src="${ pageContext.request.contextPath }/resources/js/perfect-scrollbar.jquery.min.js"></script>
-<!--Wave Effects -->
+<script
+	src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
+<script
+	src="${ pageContext.request.contextPath }/resources/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+<script
+	src="${ pageContext.request.contextPath }/resources/assets/node_modules/popper/popper.min.js"></script>
+<script
+	src="${ pageContext.request.contextPath }/resources/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script
+	src="${ pageContext.request.contextPath }/resources/js/perfect-scrollbar.jquery.min.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/js/waves.js"></script>
-<!--Menu sidebar -->
-<script src="${ pageContext.request.contextPath }/resources/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
-<script src="${ pageContext.request.contextPath }/resources/js/custom.min.js"></script>
-<!-- ============================================================== -->
-<!-- This page plugins -->
-<!-- ============================================================== -->
-<!--morris JavaScript -->
-
+<script
+	src="${ pageContext.request.contextPath }/resources/js/sidebarmenu.js"></script>
+<script
+	src="${ pageContext.request.contextPath }/resources/js/custom.min.js"></script>
 <script>
 
-<!-- 출석이벤트  -->
 $(function(){
 	function c(){
 		p();
@@ -167,7 +159,7 @@ $(function(){
 		}
 	})
 });
-//클릭이벤트 
+
 $("#calendar_content").css("cursor", "pointer");
 $("#calendar_content").click(function(){
 	if(${member.today} != 0){

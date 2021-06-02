@@ -6,7 +6,6 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <link href="https://cdn.materialdesignicons.com/5.5.55/css/materialdesignicons.min.css" rel="stylesheet">
@@ -63,7 +62,6 @@ to {opacity: 1}
 @media only screen and (max-width: 300px) {
 	.prev, .next, .text {font-size: 11px}
 }
-/* 리뷰 */
 .btn-group-toggle {
 	height: 30px;
 	position: absolute;
@@ -101,11 +99,9 @@ $(function(){
 	   		 $.ajax({
 			        type: "POST",
 					url : "${pageContext.request.contextPath}/space/heart.do",
-					//dataType: "JSON",
 					data :   {
 						spaceNo : "${space.spaceNo}",
 						email : "${loginMember.principal.memberEmail}"},
-					//contentType:"application/json;charset=UTF-8"
 					success: function(data){
 						console.log(data);
 						readLikeCnt();
@@ -134,10 +130,9 @@ $(function(){
     		}
 	});
     
-    readLikeCnt(); // 처음 시작했을 때 실행되도록 해당 함수 호출
+    readLikeCnt(); 
 });
 
-	// 공간 좋아요 갯수 읽어오고 이전에 위시리스트에 추가했는지 검사
     function readLikeCnt() {
 		$.ajax({
 			url: "${pageContext.request.contextPath}/space/readLikeCnt.do",
@@ -151,9 +146,7 @@ $(function(){
                 console.log(data);
             	$(".like-count").html(data.cnt);
             	if(data.status=='liked'){
-						//멤버 이메일로 좋아요 검색 후 이미 좋아요한 경우 
 						$("#heart-a").html("<i class='fas fa-heart' style='color:#ffc107; margin:2px;'></i>");		       			
-						console.log(data.status);
                 	}
             },
 			error: function(xhr, status, err){
@@ -174,7 +167,6 @@ function urlcopy(){
 	swal("url 복사완료!");
 }
 
-//트위터 공유
 function twitterShare() {
 	window.open("https://twitter.com/intent/tweet"
 			+"?via=SpaceUs"
@@ -185,7 +177,6 @@ function twitterShare() {
 	);
 }
 
-//네이버 공유
 function naverShare() {
 	var url = encodeURI(encodeURIComponent(window.location.href));
     var title = encodeURI("${ space.spaceName }");
@@ -242,8 +233,6 @@ function naverShare() {
 									<button class="btn btn-primary w-100" id="url-btn" onclick="urlcopy();">URL 복사</button>
 								</div>
 							</div>
-							<!-- 공유하기 팝오버 끝-->
-							<!-- 예약버튼 -->
 							<input type="hidden" name="memberId" id="memberId" value="${loginMember.principal.memberEmail}" />
 							<input type="submit" onclick="rvSubmit();" value="예약하기"
 								class="btn py-3 px-5 btn-primary font-bold" style="font-size:16px;margin-left: 70px"> 
@@ -264,7 +253,6 @@ function naverShare() {
 				</div>
 			</div>
 		</div>
-		<!-- 세부카테고리 시작 -->
 		<div class="row">
 			<div class="col-md-12 pills">
 				<div class="bd-example bd-example-tabs">
@@ -285,10 +273,8 @@ function naverShare() {
 
 						</ul>
 					</div>
-					<!-- 세부카테고리 끝-->
 
 					<div class="tab-content" id="detail-tabContent">
-						<!-- contact 시작 -->
 						<div class="tab-pane fade show active" id="detail-description" role="tabpanel"
 							aria-labelledby="detail-manufacturer-tab" style="padding-top: 50px;">
 							<div class="row pb-5" style="border-bottom: 1px solid #ddd;">
@@ -308,12 +294,10 @@ function naverShare() {
 		                             </c:otherwise>
 	                           </c:choose>
 							</div>	
-							<!-- 공간설명 시작-->
 							<div class="col-11" style="margin-bottom:70px; padding-left:80px;">
 								<p style="font-size: 16px; min-height:300px; padding-top: 50px; line-height: 30px;">
 									${ space.content } <br /> </p>
 							</div>
-							<!-- 공간위치 -->	
 							<div class="row" style="margin-left: 5em;">
 								<div id="kakaomap" style="width:450px;height:400px; "></div>
 								<div class="contact-info" style="padding-left: 70px;">
@@ -349,7 +333,6 @@ function naverShare() {
 								</div>
 							</div>
 						</div>
-						<!-- contact 끝 -->
 <input type="hidden" id="spaceCon" value="${ space.content }" />
 <input type="hidden" id="spaceAddr" value="${ space.address }" />
 <input type="hidden" id="spaceTitle" value="${ space.spaceName }" />
@@ -359,10 +342,8 @@ function naverShare() {
    		<div class="col-md-10" style="margin: 0 auto;">
    			<h3 class="head fa fa-pencil"> ${qnaTotal }개의 질문글</h3>
    				
-			 	<!-- 질문글 등록 모달창 -->
 				<sec:authorize access="hasAnyRole('USER','HOST')"> 
 				
-				<!-- 질문글쓰기 버튼 -->
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qnaModal" data-whatever="@fat" style="float: right; margin-right: 70px; letter-spacing:1px; font-weight:bold; font-size:1em;">질문글 작성</button>
 				<div class="modal fade" id="qnaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
@@ -403,13 +384,6 @@ function naverShare() {
 				  </div>
 				</div>
 				</sec:authorize>
-				<!-- 질문글 등록 모달창 끝-->
-				
-<!-- 				<div id="dialog">
-					<p>질문글을 삭제하시겠습니까?</p>
-				</div> -->
-				
-				<!-- 답변 모달창-->
 				<sec:authorize access="hasRole('HOST')">
 				<div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
@@ -446,8 +420,6 @@ function naverShare() {
 				  </div>
 				</div>
 				</sec:authorize>
-				<!-- 질문글 답변 모달창 끝 -->
-					<!-- 질문글 수정 모달창 -->			
 				 <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
@@ -486,7 +458,6 @@ function naverShare() {
 				    </div>
 				  </div>
 				</div>	 
-				<!-- 질문글 삭제 Modal -->
 				<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
@@ -498,7 +469,6 @@ function naverShare() {
 				        </button>
 				      </div>
 				      
-				    <!-- _csrf 인증 토큰 발행 -->
 				    <form:form 
 				    	action="${pageContext.request.contextPath }/qna/deleteQuestion.do" 
 				    	method="POST">
@@ -520,7 +490,6 @@ function naverShare() {
 				  </div>
 				</div>
 				
-		 	<!-- 질문글 시작 -->
 		 	<c:if test="${ not empty qlist }">
 			<c:forEach items="${ qlist }" var="qna" varStatus="vs">
 			<div class="review d-flex">
@@ -537,7 +506,6 @@ function naverShare() {
    											<div style="margin-right:15px;">
 						   			   		 <p style="padding:0 20px; text-align:justify;">${qna.content }</p>
 						   			    	</div>
-   										<!-- 질문 작성자일 때 수정삭제 가능 -->
 			   			 				<sec:authorize access="hasAnyRole('HOST', 'USER')">
    										<sec:authentication property="principal.username" var="loginMember"/>
    											<c:if test="${loginMember != null && loginMember eq qna.email }">
@@ -559,7 +527,6 @@ function naverShare() {
 		   			 	<c:otherwise>
 		   			 		<p style="padding-left:20px; text-align:justify; color: #a1beb6;"><i class="fa fa-lock">비공개</i></p>
 		   			 		
-		   			 		<!-- 비공개 질문은 호스트와 질문 작성자, 관리자가 조회 가능 -->
 		   			 		<sec:authorize access="hasAnyRole('HOST', 'USER')">
    							<sec:authentication property="principal.username" var="loginMember"/>
    								
@@ -604,7 +571,6 @@ function naverShare() {
 		   			 	</c:otherwise>
 		   			</c:choose>
 		   			
-		   			<!-- 호스트 권한을 갖고 있고 해당 공간의 호스트의 메일과 로그인 유저의 메일이 동일하면 답변하기 버튼 생성 -->
 	   				<sec:authorize access="hasRole('HOST')">
    					<sec:authentication property="principal.username" var="loginMember"/>
    					<c:if test="${loginMember != null && loginMember eq space.memberEmail && qna.answer == null}">
@@ -620,9 +586,6 @@ function naverShare() {
 		   		</div>
 		   		
 		   	</div> 
-		   	
-		
-		   		<!-- 답변 내용이 있고 공개질문글일때의 답변 출력-->
 				<c:if test="${ qna.answer != null && qna.status eq false }">
 				
 	   			<div class="review d-flex" style="padding:0 10px 20px 10px; margin-left:30px;">
@@ -637,12 +600,10 @@ function naverShare() {
 			   			<sec:authentication property="principal.username" var="loginMember"/>
 			   			<c:if test="${loginMember eq space.memberEmail}">
 			   			<h4 style="text-align: right;">
-						   				<!-- <span style="width: 80px; height: 24.8px; margin: 3px;"> -->
 						   					<button type="button" class="btn btn-secondary answerbtn" data-toggle="modal" data-target="#answerModal" data-whatever="@fat" 
 						   						style="float: right; margin-right: 10px; margin-bottom:7px; letter-spacing:1px; color:#a6e4d2; font-weight:bold; font-size:13px;" onclick="selectQnaNo('${qna.qnaNo }');" 
 						   							value="${qna.qnaNo }">답변 수정</button>
 						   					
-				   						<!-- </span> -->   						
 					   				</h4>
 					   	</c:if>
 					   	</sec:authorize>
@@ -650,9 +611,7 @@ function naverShare() {
 			   	</div>
 			   	
 			   	</c:if>
-			   	<!-- 답변내용이 있고 비공개질문글일때 -->
 			   	<c:if test="${ qna.answer != null && qna.status eq true }">
-			   		<!-- 관리자이거나 -->
 			   		<sec:authorize access="hasRole('ADMIN')">
 				   		<div class="review d-flex" style="padding:0 10px 20px 10px; margin-left:30px;">
 					   		<div class="desc" style="background-color:#f4f4f4; padding:15px; border-radius:10px;">
@@ -665,10 +624,8 @@ function naverShare() {
 					   		</div>
 				   		</div>
 			   		</sec:authorize>
-			   		<!-- 유저인 경우 -->
 			   		<sec:authorize access="hasRole('USER')">
 		   			<sec:authentication property="principal.username" var="loginMember"/>
-		   			<!-- 로그인사용자가 글작성자일때 -->
 		   			<c:if test="${loginMember != null && loginMember eq qna.email }">
 		   				<div class="review d-flex" style="padding:0 10px 20px 10px; margin-left:30px;">
 					   		<div class="desc" style="background-color:#f4f4f4; padding:15px; border-radius:10px;">
@@ -683,7 +640,6 @@ function naverShare() {
 		   			</c:if>
 		   			</sec:authorize>
 		   			<sec:authorize access="hasRole('HOST')">
-			   		<!-- 호스트일 때 -->
    					<sec:authentication property="principal.username" var="loginMember"/>
    						
 		   					<c:if test="${loginMember != null && loginMember eq space.memberEmail }">
@@ -697,17 +653,13 @@ function naverShare() {
 							   			</h4>
 							   		<p style="padding-left:15px">${ qna.answer}</p>
 				   					<h4 style="text-align: right;">
-						   				<!-- <span style="width: 80px; height: 24.8px; margin: 3px;"> -->
 						   					<button type="button" class="btn btn-secondary answerbtn" data-toggle="modal" data-target="#answerModal" data-whatever="@fat" 
 						   						style="float: right; margin-right: 10px; margin-bottom:7px; letter-spacing:1px; color:#a6e4d2; font-weight:bold; font-size:13px;" onclick="selectQnaNo('${qna.qnaNo }');" 
 						   							value="${qna.qnaNo }">답변 수정</button>
-						   					
-				   						<!-- </span> -->   						
 					   				</h4>
 					   			</div>
 					   		</div>
 			   				</c:if>
-			   		<!-- 다른 공간의 호스트인데 비공개 글 작성자인경우 -->
 			   				<c:if test="${loginMember != null && loginMember eq qna.email && loginMember ne space.memberEmail }">
 			   				<div class="review d-flex" style="padding:0 10px 20px 10px; margin-left:30px;">
 					   		<div class="desc" style="background-color:#dfe8e6; padding:15px; border-radius:10px;">
@@ -733,9 +685,6 @@ function naverShare() {
 		   	
    		</div>
    		</div>
-<!-- qna끝 -->
-
-						<!-- 리뷰 시작-->
 						<div class="tab-pane fade" id="detail-review" role="tabpanel"
 							aria-labelledby="detail-review-tab">
 							<div class="row">
@@ -911,7 +860,6 @@ function naverShare() {
 								</div>
 							</div>
 						</div>
-						<!-- 리뷰 끝 -->
 					</div>
 				</div>
 			</div>
@@ -919,7 +867,6 @@ function naverShare() {
 	</div>
 </section>
 
-<!-- 추천시스템 시작 -->
 <div class="container" style="border-top: 1px solid rgba(0, 0, 0, 0.1)">
 	<div class="row justify-content-center">
 		<div class="col-md-12 mt-5 heading-section text-center ftco-animate mb-5">
@@ -935,7 +882,6 @@ function naverShare() {
     		<div class="property-wrap ftco-animate">
     			<c:choose>
 					<c:when test="${ space.renamedFilename !=null }">
-					<!-- 이미지파일이 있을때 -->
 				   		<a href="${pageContext.request.contextPath }/space/spaceDetail.do?spaceNo=${space.spaceNo}" class="img" style="background-image: url(${pageContext.request.contextPath }/resources/upload/space/${space.renamedFilename});"></a> 
 					</c:when>
 					<c:otherwise>
@@ -965,46 +911,31 @@ function naverShare() {
 </div>
 <input type="hidden" id="bool" value="${ bool }" />
 
-<!-- 추천시스템 끝 -->
-      
 <script>
-<!-- 지도 -->
-var mapContainer = document.getElementById('kakaomap'), // 지도를 표시할 div 
+var mapContainer = document.getElementById('kakaomap'),  
 mapOption = {
-    center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-    level: 3 // 지도의 확대 레벨
+    center: new kakao.maps.LatLng(37.566826, 126.9786567),
+    level: 3
 };  
 
-// 지도를 생성합니다    
 var map = new kakao.maps.Map(mapContainer, mapOption); 
-
-//주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
-
-	// 주소로 좌표를 검색합니다
 	geocoder.addressSearch($("#spaceAddr").val().substr(9), function(result, status) {
-
-// 정상적으로 검색이 완료됐으면 
  if (status === kakao.maps.services.Status.OK) {
 
     var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-    // 결과값으로 받은 위치를 마커로 표시합니다
     var marker = new kakao.maps.Marker({
         map: map,
         position: coords
     });
- 	// 인포윈도우로 장소에 대한 설명을 표시합니다
     var infowindow = new kakao.maps.InfoWindow({
     });
 
-    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
     map.setCenter(coords);
 } 
 });  
 
 </script>
-<!-- 카카오톡 공유 -->
 <script type='text/javascript'>
 
 	
@@ -1088,7 +1019,6 @@ function sendAnswer(){
 function modifyCheck(){
 
 	if($("#modify-status").is(':checked')){
-		//비밀글 설정 체크시 이벤트
 		 document.getElementById("modify-status").value = 'true';
 	} else{document.getElementById("modify-status").value = 'false'; }
 }
@@ -1096,7 +1026,6 @@ function modifyCheck(){
 function onCheck(){
 
 	if($("#qna-status").is(':checked')){
-		//비밀글 설정 체크시 이벤트
 		 document.getElementById("qna-status").value = 'true';
 	} else{document.getElementById("qna-status").value = 'false'; }
 }
@@ -1113,7 +1042,6 @@ function ask(){
 		}
 }
 
-//예약하기
 function rvSubmit(){
    	if($("#memberId").val()){
 		$("#reserveFrm").attr("action", "${ pageContext.request.contextPath }/space/reserveSpace.do")
@@ -1129,7 +1057,6 @@ function rvSubmit(){
 };
 
 
-/* 이미지 슬라이드 시작 */
 let b = document.querySelector('button');
 setTimeout(()=>b.focus(), 100);
 setTimeout(()=>b.blur(), 1000);
@@ -1155,16 +1082,15 @@ function showSlides(n) {
   }
   slides[slideIndex-1].style.display = "block";  
 }
-/* 이미지 슬라이드 끝 */
 
-/* 포토리뷰 */
 $("#option1").on("click", function(){
 	$(".nullImg").removeClass("hide");
 });
+
 $("#option2").on("click", function(){
 	$(".nullImg").addClass("hide");
 });
-/* 리뷰 디테일 호버 */
+
 $(document).ready(function (){
 	$(".reviewDetailBtn").mouseenter(function(){
 		$(this).children(".detailBtn").css('text-decoration', 'underline');
@@ -1173,6 +1099,7 @@ $(document).ready(function (){
 		$(".detailBtn").css('text-decoration', 'none');
 	});
 });
+
 $(document).ready(function (){
 	$(".reviewSimpleBtn").mouseenter(function(){
 		$(this).children(".simpleBtn").css('text-decoration', 'underline');
@@ -1181,7 +1108,7 @@ $(document).ready(function (){
 		$(".simpleBtn").css('text-decoration', 'none');
 	});
 });
-/* 리뷰 디테일 */
+
 $(".reviewToggle").on('click', function(){
 	$(this).children(".reviewDetailBtn").toggle();
 	$(this).children(".reviewSimpleBtn").toggle();
@@ -1233,7 +1160,6 @@ $(function () {
 	} 
 });
 
-//페이징
 $("[name=qnaPaging]").click(function(){
 		var position = $(window).scrollTop(); 
 		location.href="${pageContext.request.contextPath }/space/spaceDetail.do?spaceNo="+"${space.spaceNo}"+"&qnaPaging="+$(this).val()+"&width="+position;
@@ -1243,7 +1169,6 @@ $("[name=reviewPaging]").click(function(){
 		location.href="${pageContext.request.contextPath }/space/spaceDetail.do?spaceNo="+"${space.spaceNo}"+"&reviewPaging="+$(this).val()+"&width="+position;
 });
 
-//로그인 후 이용 처리
 $("#likeLogin").click(function(){
 
   	swal("로그인 후 이용할 수 있습니다.")
@@ -1253,5 +1178,4 @@ $("#likeLogin").click(function(){
 });
 
 </script>
-<!-- 컨텐츠 끝 -->
-<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+a<jsp:include page="/WEB-INF/views/common/footer.jsp" />

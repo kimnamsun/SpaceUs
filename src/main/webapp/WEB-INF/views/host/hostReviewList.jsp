@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8" />
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
@@ -51,7 +50,7 @@ a:hover {opacity: 0.3; color:black;}
 @media only screen and (max-width: 300px) {
   .prev, .next,.text {font-size: 11px}
 }
-/* 리뷰 */
+
 .btn-group-toggle{
 	height: 30px;
     position: absolute;
@@ -67,9 +66,6 @@ a:hover {opacity: 0.3; color:black;}
 
         <div class="page-wrapper">
             <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
                         <h4 class="text-themecolor ml-5">호스트 센터</h4>
@@ -84,8 +80,6 @@ a:hover {opacity: 0.3; color:black;}
                     </div>
                 </div>
                
-		        <!-- 리뷰 -->
-		        
 		        <div id="reviewPage" class="ml-5 mr-5">
                   <div class="card p-5">
                       <div class="card-body">
@@ -118,8 +112,6 @@ a:hover {opacity: 0.3; color:black;}
                        <div >
 				   		<div class="row">
 				   		<p class="head"></p>
-				   			<%-- <p class="head ml-4">${ reviewTotal }개의 리뷰</p> --%>
-				   			
 				   		</div>
 				   		<c:choose>
 				         <c:when test="${ not empty review }">
@@ -155,7 +147,6 @@ a:hover {opacity: 0.3; color:black;}
 												<p style="font-weight: 600;" class="simpleBtn">접기</p>
 									   			<div style="background-image: url(${pageContext.request.contextPath}/resources/upload/review/${review.image});  width: 500px;height: 350px;background-size: cover; margin-bottom:30px;"></div>
 							   				</div>
-							   				<!-- 댓글 -->
 							   				<div class="commentBox" style="background-color: #fafafa;  cursor:default; border: 1px solid #edeceb; padding-bottom: 30px; ">
 					                         <div class="pl-5 pr-5 pt-4 commentBox">
 					                         	<p class="commentBox"><i class="fa fa-comment mr-1 commentBox"></i>댓글</p>
@@ -181,7 +172,6 @@ a:hover {opacity: 0.3; color:black;}
 												</c:choose>
 				                         		</div>
 					                           </div>
-							   				<!-- 댓글 끝 -->
 							   			</div>
 							   			
 						   			</div>
@@ -217,7 +207,6 @@ a:hover {opacity: 0.3; color:black;}
 							   				<p>${ review.content }</p>
 											<p style="font-weight: 600;" class="simpleBtn">접기</p>
 										</div>
-										<!-- 댓글 -->
 						   				<div class="commentBox" style="background-color: #fafafa;  cursor:default; border: 1px solid #edeceb; padding-bottom: 30px; ">
 				                         <div class="pl-5 pr-5 pt-4 commentBox">
 				                         	<p class="commentBox"><i class="fa fa-comment mr-1 commentBox"></i>댓글</p>
@@ -243,7 +232,6 @@ a:hover {opacity: 0.3; color:black;}
 											</c:choose>
 			                         		</div>
 				                           </div>
-						   				<!-- 댓글 끝 -->
 						   			</div>
 						   			</div>
 						   		</div>
@@ -265,29 +253,18 @@ a:hover {opacity: 0.3; color:black;}
                     </div>
                 </div>
             </div>  
-		<!-- 리뷰 끝 -->
     </div>
 </div>
 
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap popper Core JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/popper/popper.min.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/perfect-scrollbar.jquery.min.js"></script>
-<!--Wave Effects -->
 <script src="${ pageContext.request.contextPath }/resources/js/waves.js"></script>
-<!--Menu sidebar -->
 <script src="${ pageContext.request.contextPath }/resources/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/custom.min.js"></script>
-<!-- ============================================================== -->
-<!-- This page plugins -->
-<!-- ============================================================== -->
-<!--morris JavaScript -->
 <script>
-/* 리뷰 디테일 호버 */
 $(document).ready(function (){
 	$(".reviewDetailBtn").mouseenter(function(){
 		$(this).children(".detailBtn").css('text-decoration', 'underline');
@@ -296,6 +273,7 @@ $(document).ready(function (){
 		$(".detailBtn").css('text-decoration', 'none');
 	});
 });
+
 $(document).ready(function (){
 	$(".reviewSimpleBtn").children(".reviewSimple").mouseenter(function(){
 		$(this).children(".simpleBtn").css('text-decoration', 'underline');
@@ -304,13 +282,13 @@ $(document).ready(function (){
 		$(".simpleBtn").css('text-decoration', 'none');
 	});
 });
-/* 리뷰 디테일 */
+
 $(".reviewToggle").click(function(e){
 	if($(e.target).hasClass("commentBox")) return;
 	$(this).children(".reviewDetailBtn").toggle();
 	$(this).children(".reviewSimpleBtn").toggle();
 });
-/*리뷰 댓글 등록*/
+
 $(".insertComment").click(function(){
 	let reviewNo = $(this).siblings('input').val();
 	let content = $(this).siblings('.content').val();
@@ -333,12 +311,12 @@ $(".insertComment").click(function(){
 	}); 
 	
 });
-//리뷰 수정
+
 $(".modifyBtn").click(function(){
 	$(this).parent(".modifyFrm").hide();
 	$(this).parent("div").siblings(".modifyDiv").show();
 });
-//리뷰 모아보기
+
 $("#selectId").change(function(){
 	let option = $("#selectId").val();
 	if(option == 1) $("#totalCommentFrm").submit();

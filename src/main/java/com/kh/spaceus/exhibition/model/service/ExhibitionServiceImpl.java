@@ -20,31 +20,34 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 	public List<Exhibition> selectExList() {
 		return exhibitionDAO.selectExList();
 	}
+	
 	@Override
 	public int deleteExhibition(String exNo) {
 		return exhibitionDAO.deleteExhibition(exNo);
 	}
+	
 	@Override
 	public int insertExhibition(Exhibition exhibition) {
 		return exhibitionDAO.insertExhibition(exhibition);
 	}
+	
 	@Override
 	public Exhibition selectOne(String exNo) {
 		return exhibitionDAO.selectOne(exNo);
 	}
+	
 	@Override
 	public List<SpaceList> selectByTagNo(String tagNo) {
 		return exhibitionDAO.selectByTagNo(tagNo);
 	}
+
 	@Override
 	public Exhibition selectOneByTag(String tag) {
 		return exhibitionDAO.selectOneByTag(tag);
 	}
+
 	@Override
 	public List<ExhibitionTag> selectTagList() {
 		return exhibitionDAO.selectTagList();
 	}
-	
-	
-
 }

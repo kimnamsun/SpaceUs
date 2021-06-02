@@ -7,7 +7,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <%
@@ -50,8 +49,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 	display: none;
 }
 </style>
-<!-- 컨텐츠 시작 -->
-<!-- 헤더 -->
 <section class="ftco-section ftco-agent">
 
  <div class="navbar justify-content-center navbar-dark bg-dark">
@@ -86,10 +83,8 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
       </div>
     </div>
 
-    <!-- 구인구직 시작-->
 	<section class="blog-section spad">
 	 <div class="row m-5">
-                 <!-- column -->
                  <div class="col-12">
                          <div class="m-5" >
 								
@@ -121,7 +116,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
                                		</sec:authorize>
                                 </tr>
                             </table>
-                            <!-- Modal -->
 					        <div class="modal fade" id="intro" role="dialog" aria-labelledby="introHeader" aria-hidden="true" tabindex="-1">
 					            <div class="modal-dialog">
 					                <div class="modal-content">
@@ -144,12 +138,8 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 					                </div>
 					            </div>
 					        </div>
-
-
                          <div class="m-5">
                          <div class="mb-5">${recruit.reportCnt >=10 ? "게시글이 비공개 처리 되었습니다." : recruit.content}</div>
-                         
-                         <!-- 댓글 -->
                          <div id="commentBox" style="background-color: #fafafa; border: 1px solid #edeceb; padding-bottom: 50px; ">
                          <div class="pl-5 pr-5 pt-4">
                          	<p><i class="fa fa-comment mr-1"></i>댓글 ${ commentTotal }개</p>
@@ -161,13 +151,10 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 	                         	<textarea class="col ml-2 mr-1 mt-1" id=content style="resize: none; border:1px solid #edeceb; height: 80px; border-radius: 4px;"></textarea>
 	                           	<button type="button" class="btn mt-1" id="insertComment" style="margin-bottom: 70px;height: 80px; border: 1px solid #dddddd;width: 70px;">등록</button>
                          	</div>
-                         <!-- 댓글 보기 -->
-                         <%-- <c:forEach items="${commentList}" var="list" varStatus="vs"> --%>
                          <c:forEach items="${commentList}" var="list" varStatus="vs">
                        			<c:if test="${list.level == 1 }">
                          		<div style="margin-top: 20px;">
                            		<tr class="col-md-1">                           		
-                           			
                                     <th><b>${list.nickName}</b></th>
                                     <th><p style="display: inline; margin: 0 0 0 10px; color: #d0d0d0;"><fmt:formatDate value="${list.date}" pattern="yyyy.MM.dd"/></p></th>
                                     	
@@ -218,7 +205,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
                                 </c:if>
                                	
                         	</div>
-             				<!-- 대댓글 폼 시작 -->
              				<div class="${list.no} hide">
 	             				<input type="text" placeholder="답글을 입력해주세요" class="replyCon" style="margin:20px 0 20px 30px;background-color: #efefef; border: none;border-bottom: 1px solid #666; width:78%;"/>
 	                       		<c:if test="${ list.secret == 1 && loginMember != null &&( loginMember eq recruit.email || loginMember == list.email )}">
@@ -229,7 +215,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 	                       		<button type="button" class="btn btn-secondary ml-4 replyBtn">답글</button>
 	                       		<button type="button" class="btn btn-light closeBtn">X</button>
              				</div>
-                       		<!-- 대댓글 폼 끝 -->
                        		</c:if>
 	                           			
 							 <c:if test="${list.level == 2 }">
@@ -278,10 +263,8 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 	                         	
 							</c:if>	                       	
                         	</c:forEach>		                         	
-                         		<!-- 댓글보기끝-->
                          		</div>
 	                           </div>
-                       <!-- 댓글 끝 -->
 	                         </div>
                          </div>
                          </div>
@@ -291,8 +274,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
                          </div>
                      </div>
              </section>
-    <!-- 구인구직 리스트 끝-->
-<!-- 컨텐츠 끝 -->
 <script>
 $("#modifyBtn").on('click', function(){
 	let no = $("[name=no]").val();
@@ -323,7 +304,6 @@ function reportBtn(){
 		}
 	});
 };
-//댓글 등록
 $("#insertComment").click(function(){
 	if('${loginMember}' == 'anonymousUser'){
 		alert("로그인 후 이용할 수 있습니다.");
@@ -355,7 +335,6 @@ $("#insertComment").click(function(){
 		}); 
 	};
 });
-//댓글 신고/수정/삭제 버튼 이벤트
 function clear(){
     $(".commentMenu").removeAttr("style");
 }
@@ -375,9 +354,7 @@ $(".fa-ellipsis-v").click(function(){
 		$(this).children(".commentMenu").addClass('show');
 	}
 });
-//답글 폼 이벤트
 $(".replyComment").click(function(){
-	//alert($(this).children("[name=recruitCommentNo]").val());
 	let commentClass = "." + $(this).children("[name=recruitCommentNo]").val();
 	$(commentClass).removeClass('hide');
 	$("commentClass").addClass('show');
@@ -386,7 +363,6 @@ $(".replyComment").click(function(){
 $(".closeBtn").click(function(){
 	$(this).parent('div').addClass('hide');
 });
-//답글 비밀글
 $(".fa-unlock").click(function(){
 	$(this).parent('span').addClass('hide');
 	$(this).parent('span').siblings("span").removeClass('hide');
@@ -395,7 +371,7 @@ $(".fa-lock").click(function(){
 	$(this).parent('span').addClass('hide');
 	$(this).parent('span').siblings("span").removeClass('hide');
 });
-//답글 등록
+
 $(".replyBtn").click(function(){
 	let replyContent = $(this).siblings('input').val();
 	let secret = 0;
@@ -424,7 +400,6 @@ $(".replyBtn").click(function(){
 		}
 	}); 
 });
-//댓글 수정
 $(".commentModify").click(function(){
 	let commentNo = ".modify" + $(this).siblings("input").val();
 	$(commentNo).siblings('div').addClass("hide");
@@ -456,7 +431,7 @@ $(".commentModifyBtn").click(function(){
 		}
 	}); 
 });
-//댓글 삭제
+
 $(".commentDelete").click(function(){
 	if(!confirm("댓글을 삭제하시겠습니까?")) return;
 	let commentNo = $(this).siblings("input").val();
@@ -477,7 +452,7 @@ $(".commentDelete").click(function(){
 		}
 	}); 
 });
-//댓글 신고
+
 $(".commentReport").click(function(){
 	if(!confirm("댓글을 신고하시겠습니까?")) return;
 	let commentNo = $(this).siblings("input").val();
@@ -498,7 +473,7 @@ $(".commentReport").click(function(){
 		}
 	});
 });
-//로그인요청
+
 $("#content").keyup(function(){
 	if('${loginMember}' == 'anonymousUser'){
 		$("#content").val("");

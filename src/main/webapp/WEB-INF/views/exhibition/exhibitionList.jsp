@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <style>
 .search-result {
@@ -12,7 +11,6 @@
 }
 </style>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
-<!-- 컨텐츠 시작 -->
     <div class="hero-wrap ftco-degree-bg"
     	 style="background-image: url('https://kr.object.ncloudstorage.com/scloud-service/service/160042093_3c874989f2a7c83b4334157979430945.png');
     	 		height: 400px" data-stellar-background-ratio="0.5">
@@ -29,7 +27,6 @@
       </div>
     </div>
 <hr / style="margin-top: 8rem; margin-bottom: 3rem;">
-<!-- 기획전 공간 리스트 시작 -->
 <div class="container search-result" style="margin-bottom: 8rem;">
     <c:if test="${!empty exList}">
     <div class="row">
@@ -46,9 +43,9 @@
 		    						<fmt:formatNumber value="${list.starAvg}" pattern="0.0" type="number"/>
 	    						</c:if>
 	    						<c:if test="${list.starAvg == 0 }">0</c:if>
-	    					</li><!-- 평균 별점 수 -->
-	    					<li><span class="icon-heart"></span>${list.likeCnt }</li> <!-- 좋아요 수 -->
-	    					<li><span class="icon-comments"></span>${list.reviewCnt}</li><!-- 리뷰 수 -->
+	    					</li>
+	    					<li><span class="icon-heart"></span>${list.likeCnt }</li>
+	    					<li><span class="icon-comments"></span>${list.reviewCnt}</li>
 	    				</ul>
 	    				<h3><a href="${pageContext.request.contextPath }/space/spaceDetail.do?spaceNo=${list.spaceNo}">${list.spaceName}</a></h3>
 	    				<small><span class="icon-my_location">${list.address}</span></small>
@@ -70,7 +67,5 @@
 	</c:if>
 	
 </div>
-<!-- 기획전 공간 리스트 끝-->
 </section>
-<!-- 컨텐츠 끝 -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

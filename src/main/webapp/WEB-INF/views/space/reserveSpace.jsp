@@ -6,7 +6,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <style>
@@ -24,8 +23,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 .nochoose {color:#e6e6e6;}
 </style>
 
-<!-- 컨텐츠 시작 -->
-<!-- 헤더 -->
     <div class="hero-wrap ftco-degree-bg"
     	 style="background-image: url('${pageContext.request.contextPath }/resources/images/bg_1.jpg');
     	 		height: 400px"
@@ -42,8 +39,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
       </div>
     </div>
 
-    <!-- 공간 예약 폼 시작-->
-        <!-- Blog Section Begin -->
 <section class="blog-section spad">
     <div class="container">
         <div class="row">
@@ -186,7 +181,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
                 </div>
             </div>
             <div class="col-lg-4">
-            <!-- 결제예정금액창 -->
                 <div class="blog-sidebar">
                     <div class="subscribe-form">
                         <div class="section-title sidebar-title-b">
@@ -226,14 +220,11 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
         </div>
     </div>
 </section>
-    <!-- Blog Section End -->
-    <!-- 공간 예약 폼 끝-->
 
 <script>
 var avail = new Array();
 var today;
 $(function(){
-	//객체배열에 넣기
 	<c:forEach items="${availList}" var="info">
 		var hour = new Object();
 		hour.day="${info.day}";
@@ -241,9 +232,6 @@ $(function(){
 		hour.end="${info.endHour}";
 		avail.push(hour);
 	</c:forEach>
-	//alert("avail="+JSON.stringify(avail));
-
-	//오늘 날짜 구하기
     var now = new Date();
     today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
     console.log(today);
@@ -253,7 +241,6 @@ $(function(){
 	}
 });
 
-//예약 날짜 클릭이벤트
 var index=-1;
 var start=-1;
 var end=-1;
@@ -276,7 +263,6 @@ function selectDay(val){
 		return;
 	}
 	
-	//날짜 선택
 	var day = week[date.getDay()];
 	index = avail.findIndex(obj => obj.day == day);
 	
@@ -287,7 +273,6 @@ function selectDay(val){
 		});
 	}
 	
-	//가능시간 표시
 	for(var i=0; i<24; i++){
 		if(index == -1)
 			$("#"+i).addClass("nochoose");
@@ -298,11 +283,7 @@ function selectDay(val){
 				$("#"+i).addClass("nochoose");
 		}
 	}
-
-	//이미 예약된 시간 지우기
-	console.log(date);
 	date = getFormatDate(date);
-	console.log(date);
 	
 	<c:forEach items="${unselectableList}" var="info">
 		if(date == "${info.day}"){
@@ -316,9 +297,7 @@ function selectDay(val){
 	$("[name=day]").val($("#D-day").val());
 }
 
-//가능시간 클릭이벤트
 $("#availableTime th").on("click", function(){
-	//날짜,요일 선택여부
 	if($("#D-day").val()==''){
 		swal("예약 날짜를 먼저 선택해주세요")
 		.then((value) => {
@@ -333,8 +312,6 @@ $("#availableTime th").on("click", function(){
 
 	if(start == -1){
 		start = Number($(this).attr("id"));
-		//console.log("start : "+ start);
-		//셀 색 바꾸기
 	    $(this).addClass("bg-primary");
 	    return;
 	}
@@ -368,7 +345,6 @@ $("#availableTime th").on("click", function(){
     
 });
 
-//초기화
 function resetHour(){
 	index=-1;
 	start=-1;
@@ -384,7 +360,6 @@ function resetHour(){
 	$("input:radio[name='selectPay']").removeAttr("checked");
 }
 
-//날짜변환
 function getFormatDate(date){
     var year = date.getFullYear();
     var month = (1 + date.getMonth());
@@ -446,7 +421,6 @@ function discount(){
 </script>
 <script>
 $("#sub").on("click", function(){
-	//빈칸이면 입력 요구
 	if($("[name=Day]").val() == ""){
 
 		swal("예약날짜를 선택해주세요.")
@@ -484,11 +458,8 @@ $("#sub").on("click", function(){
 		document.getElementById("agree3").focus();
 		return false;
 	}
-
-	//iamport();
 	document.insertReservation.submit();
 });
 
 </script>
-<!-- 컨텐츠 끝 -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

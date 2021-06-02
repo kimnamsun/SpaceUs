@@ -18,7 +18,6 @@ public class RefererInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 					throws Exception {
-		log.info("인터셉트 체크!");
 		HttpSession session = request.getSession();
 		String referer = request.getHeader("referer");
 			

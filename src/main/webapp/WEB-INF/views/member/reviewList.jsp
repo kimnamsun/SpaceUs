@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8" />
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -21,9 +20,6 @@
 
         <div class="page-wrapper">
             <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
                         <h4 class="text-themecolor ml-5">마이페이지</h4>
@@ -38,7 +34,6 @@
                     </div>
                 </div>
                
-		        <!-- 리뷰 -->
 		        <div id="reviewPage" class="ml-5 mr-5">
                   <div class="card p-5">
                       <div class="card-body">
@@ -117,7 +112,6 @@
                                    </div>
                                        
                                    </div>
-                                   		<!-- 리뷰등록 -->
 				                         <div class="pl-5 pr-5 reviewFrm" style="height: 150px; display: none;" >
 				                         	<div class="row pl-3 align-items-xl-center">
 				                         		<p class="m-1" style="font-size: 15px;">별점 &nbsp;&nbsp;:</p>
@@ -152,8 +146,6 @@
 					                           </div>
 												</form>
 					                           
-												
-											<!-- 리뷰수정 -->	
 											<div class="pl-5 pr-5 reviewUpdateFrm" style="height: 150px; display: none;" >
 				                         	<div class="row pl-3 align-items-xl-center">
 				                         		<p class="m-1" style="font-size: 15px;">별점 &nbsp;&nbsp;:</p>
@@ -176,8 +168,6 @@
 													  <input type="hidden" name="content"  />
 													  <div class="input-group mb-3" style="padding:0px;">
 													  <div class="custom-file">
-													    <%-- <input type="file" class="custom-file-input" name="upFile" id="upFile1" >
-													    <label class="custom-file-label" for="upFile1">${list.rname }</label> --%>
 													  </div>
 													</div>
 					                         	</div>
@@ -199,7 +189,6 @@
                     </div>
                 </div>
             </div>       
-		<!-- 리뷰 끝 -->
     </div>
 </div>
 </div>
@@ -207,21 +196,12 @@
 
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap popper Core JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/popper/popper.min.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/perfect-scrollbar.jquery.min.js"></script>
-<!--Wave Effects -->
 <script src="${ pageContext.request.contextPath }/resources/js/waves.js"></script>
-<!--Menu sidebar -->
 <script src="${ pageContext.request.contextPath }/resources/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/custom.min.js"></script>
-<!-- ============================================================== -->
-<!-- This page plugins -->
-<!-- ============================================================== -->
-<!--morris JavaScript -->
 <script>
 $(".star").on('click',function(){
    var idx = $(this).index();
@@ -240,23 +220,20 @@ $(".star").on('click',function(){
 	    	$(this).addClass("fa-star");
    }
 }); 
-//사진 첨부
+
 $(function(){
 	$("[name=upFile]").on("change", function(){
-		//input:file 내부에 저장된 file객체 가져오기
 		var file = $(this).prop("files")[0];
 		var $label = $(this).next('.custom-file-label');
 		
-		//label에 쓰기
 		if(file == undefined)
 			$label.html("파일을 선택하세요.");
 		else 
 			$label.html(file.name);
 	});
 });
-//리뷰등록 버튼
+
 $(".reviewBtn").on("click", function(){
-	
 	if($(this).hasClass("btn-primary")){
 		$(this).parents("div").siblings(".reviewFrm").hide();
 		$(this).removeClass("btn-primary");
@@ -266,12 +243,11 @@ $(".reviewBtn").on("click", function(){
 		$(this).addClass("btn-primary");
 	} 	
 });
-//별 받기
- $(".star-box i").on("click", function(){
-	 /* alert($(this).hasClass("star1")?"1":$(this).hasClass("star2")?"2":$(this).hasClass("star3")?"3":$(this).hasClass("star4")?"4":"5");  */
+
+$(".star-box i").on("click", function(){
 	$("[name=starRating]").val($(this).hasClass("star1")?"1":$(this).hasClass("star2")?"2":$(this).hasClass("star3")?"3":$(this).hasClass("star4")?"4":"5");
 }); 
- //리뷰 유효성 검사
+
 $(".submit").click(function(){
 	if($(this).siblings("[name=starRating]").val()==""){
 		swal("별점을 선택해주세요");
@@ -283,19 +259,16 @@ $(".submit").click(function(){
 		return false;
 	} 
 		
-	/* 금칙어 */
 	var reContent = $(this).siblings("textarea").val();
 	var j=0;
 	var str = ["바보","멍청이"];
 	var keyRegExp = new RegExp('(' + str.join('|') + ')', 'g');
 	$(this).siblings("textarea").val(reContent.replace(keyRegExp, "❤❤"));
-	
 	$("[name=content]").val($(this).siblings("textarea").val());
-	/* alert($(this).siblings("textarea").val()); */
 
 	return true;
 });
-//리뷰수정 버튼
+
 $(".modifyBtn").on("click", function(){
 	if($(this).hasClass("btn-primary")){
 		$(this).parents("div").siblings(".reviewUpdateFrm").hide();
@@ -312,7 +285,7 @@ $(".modifyBtn").on("click", function(){
 		$(".starInfo"+className).eq(i).addClass("fa-star");
 	} 
 });
-//리뷰 모아보기
+
 $("#selectId").change(function(){
 	let option = $("#selectId").val();
 	if(option == 1) location.href="${pageContext.request.contextPath }/member/reviewList.do";

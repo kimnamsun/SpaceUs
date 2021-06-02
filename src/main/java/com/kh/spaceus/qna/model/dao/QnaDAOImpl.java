@@ -35,6 +35,4 @@ public class QnaDAOImpl implements QnaDAO {
 		return session.delete("qna.updateQuestion", qna);
 	}
 
-	
-
 }

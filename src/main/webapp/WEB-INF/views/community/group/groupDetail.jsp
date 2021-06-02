@@ -7,10 +7,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
-<!-- icons -->
 <script src="https://kit.fontawesome.com/b74a25ff1b.js" crossorigin="anonymous"></script>
 <%
 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -29,12 +27,10 @@ pageContext.setAttribute("loginMember",loginMember);
 .fas {position: absolute; padding: 90px;}
 input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 .site-btn {width: 100%; font-size: 17px;}
-/*드롭*/
 body{
     margin:0;
     padding:0;
 }
-/* ul, li 요소 초기화 */
 .main-menu,.sub-menu {
     margin:0;
     padding:0;
@@ -59,8 +55,6 @@ body{
 	padding: 10px;
 }
 </style>
-<!-- 컨텐츠 시작 -->
-<!-- 헤더 -->
 <section class="ftco-section ftco-agent">
 
  <div class="navbar justify-content-center navbar-dark bg-dark">
@@ -96,10 +90,8 @@ body{
       </div>
     </div>
 
-    <!-- 소모임 시작-->
 	<section class="blog-section spad">
 	 <div class="row m-5">
-                 <!-- column -->
                  <c:forEach items="${list}" var="list">
 	                 <div class="col-12">
 	                         <div class="m-5" style="border-bottom: 1px solid #dddddd;">
@@ -118,8 +110,6 @@ body{
 	                                </tr>
 	                                <input type="hidden" name="groupBoardNo" value="${list.groupBoardNo}"/>
 	                            </table>
-	                            
-		                        <!-- 수정삭제 버튼시작 -->
 		                        <sec:authorize access="hasAnyRole('USER','ADMIN','HOST')">
 		                        	<%-- <sec:authentication property="principal.username" var="loginMember"/> --%>
 		                        	<c:if test="${loginMember != list.memberEmail}">
@@ -139,21 +129,14 @@ body{
 		                          		<button id="deleteBtn" class="btn btn-sm" style="margin-top:42px;background-color: #00c89e;font-size:15px;color:white;float:right;margin-right: 10px;margin-top: 0;border-right-width: 0px;padding-right: 9px;">글 삭제 </button>
 		                          	</sec:authorize>                         	
 		                        </sec:authorize>
-		                        <!-- 수정삭제 버튼끝-->
 	                         </div>
 	                         
-	                         <!-- 본문 시작 -->
 		                         <div class="m-5">
 			                         <div class="mb-5">
 			                   			${list.groupBoardContent}
 			                         </div>	                         
 		                         </div>
 	                         </div>
-	                         <!-- 본문 끝 -->
-	                         
-	                         
-	                         <!-- 댓글 시작 -->
-	                       
 		                         <p style="margin-left:5%; display: inline;"><i class="fa fa-comment"></i> 댓글수 &nbsp; ${commentCnt}</p>
 	                         
 	                         <p style="display: inline; margin: 0 5px;">|</p>
@@ -178,7 +161,6 @@ body{
 										</div>
 	                         		</form>
 	                         		
-	                           		<!-- 댓글보기시작 -->
 	                           		<c:forEach items="${commentList}" var="cm" varStatus="vs">
 	                           			<c:if test="${cm.groupBoardCommentLevel eq '1' }">
 			                           		<div class="level1_${cm.groupBoardCommentNo}" style="margin-top: 10px;">
@@ -250,10 +232,6 @@ body{
 				                                	</c:choose>
 				                               </div>
 				                         	</div>
-				                         	
-				                 
-				                         	
-	                 					<!-- 대댓글 폼 시작 -->
 		                           		<script type="text/javascript">
 											$("#replyComment${cm.groupBoardCommentNo}").click(function(){
 											
@@ -296,11 +274,8 @@ body{
 													
 													$div1.insertAfter($BoardCommentDiv);
 													$('.textarea2').focus();
-																		
-											
 												}
 											});
-											/*대댓글 등록*/
 											function replyComment(){
 												var groupBoardContent = $('[name=textarea2]').val();
 												
@@ -336,21 +311,18 @@ body{
 													},
 													error: function(x,h,r){
 														swal("댓글이 정상적으로 등록이 되지 않았습니다.");
-														console.log(x,h,r);
 													}
 												});
 											} 
-											/*대댓글 취소*/
 											function replyCancel${cm.groupBoardCommentNo}(){
 												
 												$('[name=replyFrm${cm.groupBoardCommentNo}]').hide();
 												$('[name=replyComment${cm.groupBoardCommentNo}]').show();
 											}
 											
-											/*댓글 수정 폼 생성*/
 											$('[name=updateComment${cm.groupBoardCommentNo}]').click(function(){
 												
-												$(".level1__${cm.groupBoardCommentNo}").hide(); //댓글보기 안보이게 하기
+												$(".level1__${cm.groupBoardCommentNo}").hide(); 
 												let $div4 = $("<div class='form-check' style='display: inline;margin-left: 20px;'>");
 												$div4.append("<input class='form-check-input' type='checkbox' name='secret_${cm.groupBoardCommentNo}' id='secret' value='secret' ${cm.secret eq '1' ? 'checked':''}>");
 												$div4.append("<label class='form-check-label' for='secret'>비밀글</label>");
@@ -387,10 +359,8 @@ body{
 												});
 													
 											});
-											/*댓글 수정*/
 											function updateCommentBtn_${cm.groupBoardCommentNo} (){
 												var groupBoardContent = $('[name=comment_${cm.groupBoardCommentNo}]').val();
-												/* alert(groupBoardContent); */
 												
 												if(groupBoardContent == null || groupBoardContent == ''){
 													swal("댓글을 입력해주세요");
@@ -410,7 +380,6 @@ body{
 															"&groupBoardCommentLevel="+groupBoardCommentLevel+
 															"&groupBoardCommentRef="+groupBoardCommentRef+"&secret="+secret+
 															"&groupBoardCommentNo="+groupBoardCommentNo;
-												//alert(param1);
 												
 											$.ajax({
 													method:"post",
@@ -429,7 +398,6 @@ body{
 													}
 												});
 											} 
-											/*댓글 삭제*/
 											$('[name=deleteComment${cm.groupBoardCommentNo}]').click(function(){
 												if(confirm("댓글을 삭제하시겠습니까?")==false) return;
 												var groupBoardCommentNo = $('[name=groupBoardCommentNo${cm.groupBoardCommentNo}]').val();
@@ -449,13 +417,11 @@ body{
 													} ,
 													errer: function(x,s,r){
 														swal('댓글 삭제가 실패하였습니다');
-														console.log("처리실패",x,s,r);
 													}
 												});
 											});
 										
 		                           		</script>		                           			
-	                           			<!-- 대댓글 폼 끝 -->
 	                           			</c:if>
 	                           			
 	                           			
@@ -517,11 +483,8 @@ body{
 				                         	</div>
 				                         </div>
 				                         	<script type="text/javascript">
-												/*대댓글 수정 폼*/
 												$('[name=updatereply_${cm.groupBoardCommentNo}]').click(function(){
-													/* alert($(this).val()); */ 
-													
-													$(".level2__${cm.groupBoardCommentNo}").hide(); //댓글보기 안보이게 하기
+													$(".level2__${cm.groupBoardCommentNo}").hide();
 													let $div4 = $("<div class='form-check' style='display: inline;margin-left: 20px;'>");
 													$div4.append("<input class='form-check-input' type='checkbox' name='secret_${cm.groupBoardCommentNo}' id='secret' value='secret' ${cm.secret eq '1' ? 'checked':''}>");
 													$div4.append("<label class='form-check-label' for='secret'>비밀글</label>");
@@ -556,7 +519,6 @@ body{
 														$div1.remove();
 													});
 												});
-												/*대댓글 수정*/
 												function updateReplyBtn_${cm.groupBoardCommentNo}(){
 													var groupBoardContent = $('[name=comment_${cm.groupBoardCommentNo}]').val();
 													
@@ -577,7 +539,6 @@ body{
 																"&groupBoardCommentLevel="+groupBoardCommentLevel+
 																"&groupBoardCommentRef="+groupBoardCommentRef+"&secret="+secret+
 																"&groupBoardCommentNo="+groupBoardCommentNo;
-													/* alert(param1); */
 													
 												 $.ajax({
 														method:"post",
@@ -598,7 +559,6 @@ body{
 														}
 													}); 
 												}
-												/*대댓글 삭제*/
 												$('[name=deleteComment${cm.groupBoardCommentNo}]').click(function(){
 												if(confirm("댓글을 삭제하시겠습니까?")==false) return;
 												var groupBoardCommentNo = $('[name=groupBoardCommentNo${cm.groupBoardCommentNo}]').val();
@@ -617,28 +577,18 @@ body{
 													} ,
 													errer: function(x,s,r){
 														swal('댓글 삭제가 실패하였습니다');
-														console.log("처리실패",x,s,r);
 													}
 												});
 											});
 				                         	</script>
 										</c:if>	                         	
 		                         	</c:forEach>		                         	
-	                           		<!-- 댓글보기끝-->
-	                           		
 	                           </div>
 	                         </div>
-	                         <!-- 댓글 끝 -->
-	                         
-	                         
 	                         <div class="text-center">
 				                <a href='${pageContext.request.contextPath }/community/group/groupList.do' class="btn m-1" style="background-color: #00c89e; font-size:20px; color:white;"><i class="fa fa-list"></i> 목록</a>
 	                         </div>
 	                     </div>
-	                     
-	                     
-	                     
-	                   <!-- 게시판 신고 Modal -->
                        <div class="modal fade" id="intro" role="dialog" aria-labelledby="introHeader" aria-hidden="true" tabindex="-1">
                            <div class="modal-dialog">
                                <div class="modal-content">
@@ -661,14 +611,9 @@ body{
                                </div>
                            </div>
                        </div>
-                       <!-- Modal end -->
                    </c:forEach>
-          
                  </div>
              </section>
-               
-    <!-- 소모임 리스트 끝-->
-<!-- 컨텐츠 끝 -->
 <script type="text/javascript">
 $("#deleteBtn").click(function(){
 	let groupBoardNo = $("[name=groupBoardNo]").val();
@@ -678,10 +623,8 @@ $("#deleteBtn").click(function(){
 $("#alertBtn").click(function(){
 	let groupBoardNo = $("[name=groupBoardNo]").val();
 	let reportReason = $("[name=reportReason]:checked").val();
-	
 	location.href="${pageContext.request.contextPath }/community/group/alertBoard.do?groupBoardNo="+groupBoardNo+"&reportReason="+reportReason;
 });
-//댓글 삼지창
 $(function(){
 	$('.sub-menu').hide();	
 $(".textarea1").click(function(){
@@ -695,7 +638,6 @@ $(".textarea1").click(function(){
 		return;
 	}
 });
-/*댓글 등록 버튼 이벤트 ajax*/
 $("#inserCommentFrm #insertCmt").click(function(){
 	var groupBoardContent = $("[name=textarea1]").val();
 	if(groupBoardContent == null || groupBoardContent == ''){
@@ -734,7 +676,6 @@ $("#inserCommentFrm #insertCmt").click(function(){
 
 $("[name=alertComment]").click(function(){
 	var groupBoardCommentNo = $(this).val();
-	//alert(groupBoardCommentNo);
 	
 	$.ajax({
 		method:"post",
@@ -747,12 +688,9 @@ $("[name=alertComment]").click(function(){
 		},
 		error: function(x,h,r){
 			swal("댓글 신고가 되지 않았습니다");
-			console.log(x,h,r);
 		}
 	});	
 });
-
-
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

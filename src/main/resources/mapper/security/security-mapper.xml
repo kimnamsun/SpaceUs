@@ -15,7 +15,6 @@
 	    M.member_email = #{ username }
 </select>
 
-
 <resultMap type="member" id="memberMap">
 	<id column="member_email" property="memberEmail"/>
 	<result column="nickname" property="nickName"/>
@@ -27,12 +26,9 @@
 	<collection property="authorities"
 				column="member_email"
 				ofType="simpleGrantedAuthority">
-	<!-- 생성자호출코드 -->
 		<constructor>
 			<arg column="authority" javaType="string"/>
 		</constructor>
 	</collection>
 </resultMap>
-
-
 </mapper>

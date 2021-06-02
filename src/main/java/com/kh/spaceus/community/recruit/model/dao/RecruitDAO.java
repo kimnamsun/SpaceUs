@@ -50,8 +50,4 @@ public interface RecruitDAO {
 	List<Recruit> recruitHeaderSearch(String header, int limit, int offset);
 
 	int selectRecruitTotalHeader(String header);
-
-
-
-
 }

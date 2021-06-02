@@ -75,7 +75,6 @@
      		recruit_no = #{no} 
     </delete>
     
-    <!-- 신고된 적이 있는지 없는지 조회 -->
 	<select id="selectOneReport" resultMap="reportReportMap">
 		select
 			*
@@ -255,14 +254,3 @@
 	
 
 </mapper>
-
-
-
-
-
-
-
-
-
-
-

@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8"/>
 
 <style>
@@ -245,7 +244,3 @@ body{
             <div class='_2' style="font-size: 30px; margin:10px 0 30px 0;">접속할 수 없습니다.</div>
             <a class='btn' href='${pageContext.request.contextPath }'>메인 페이지로 돌아가기</a>
         </div>
-
-
-	
-	

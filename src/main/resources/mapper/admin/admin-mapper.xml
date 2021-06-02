@@ -4,7 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="admin">
 
-	<!-- member List 관리  -->
 	<select id="selectList" resultMap="memberMap">
 		select
 		    M.member_email,
@@ -18,7 +17,6 @@
 	</select>
 	<resultMap type="manageMember" id="memberMap"></resultMap>
 	
-	<!-- member totalCnt 출력-->
 	<select id="selectTotalCnt" resultType="_int">
 		select
 			count(*)
@@ -26,7 +24,6 @@
 			member
 	</select>
 	
-	<!-- user Id로  memberList 출력-->
 	<select id="findUserIdList" resultMap="memberMap">
 		select
 		    M.member_email,
@@ -41,7 +38,6 @@
 			M.member_email like '%' || #{searchKeyword} || '%'
 	</select>
 	
-	<!-- user Id로  cnt 출력-->
 	<select id="selectUserIdCnt">
 		select
 		    count(*)
@@ -52,7 +48,6 @@
 			M.member_email like '%' || #{searchKeyword} || '%'
 	</select>
 	
-	<!-- user Name로 memberList 출력 -->
 	<select id="findUserNameList" resultMap="memberMap">
 		select
 		    M.member_email,
@@ -67,7 +62,6 @@
 			M.nickname like '%' || #{searchKeyword} || '%'
 	</select>
 	
-	<!-- user Name로 cnt 출력 -->
 	<select id="selectUserNameCnt">
 		select
 		    count(*)
@@ -78,7 +72,6 @@
 			M.nickname like '%' || #{searchKeyword} || '%'
 	</select>
 	
-	<!-- user Role로 memberList 출력 -->
 	<select id="findUserRoleList" resultMap="memberMap">
 		select
 		    M.member_email,
@@ -93,7 +86,6 @@
 			A.authority = #{searchKeyword}
 	</select>
 	
-	<!-- user Role로 memberList 출력 -->
 	<select id="selectUserRoleCnt" resultType="_int">
 		select
 		   count(*)
@@ -104,8 +96,6 @@
 			A.authority = #{searchKeyword}
 	</select>
 	
-	
-	<!-- blackList group -->
 	<select id="selectGroupList" resultMap="manageBlackListMap">
 		select
 			*
@@ -115,7 +105,7 @@
 			board_type='G'
 		order by blackList_date desc
 	</select>
-	<!-- blackList recruit -->
+
 	<select id="selectRecruitList" resultMap="manageBlackListMap">
 		select
 			*
@@ -127,7 +117,6 @@
 	</select>
 	<resultMap type="manageBlackList" id="manageBlackListMap"></resultMap>
 	
-	<!-- blackList status -->
 	<select id="selectGBList" resultMap="manageGroupBoardMap">
 		select
 			group_board_no
@@ -144,7 +133,6 @@
 	</select>
 	<resultMap type="manageRecruit" id="recruitMap"></resultMap>
 	
-	<!-- blackList reason -->
 	<select id="selectReasonList" resultMap="reportMap">
 		select
 			*
@@ -155,7 +143,6 @@
 	</select>
 	<resultMap type="report" id="reportMap"></resultMap>
 	
-	<!-- space Manage -->
 	<select id="selectSpceList" resultMap="manageSpaceMap">
 		select
 		    *
@@ -180,7 +167,6 @@
 	</select>
 	<resultMap type="manageSpace" id="manageSpaceMap"></resultMap>
 	
-	<!-- confirm Space -->
 	<select id="selectSpaceOneList" resultMap="confirmSpaceMap">
 		select
 		    *
@@ -237,7 +223,6 @@
 	</select>
 	<resultMap type="confirmSpaceOption" id="optionMap"></resultMap>
 	
-	<!-- confirm space -->
 	<update id="updateStatus">
 		update
 			space

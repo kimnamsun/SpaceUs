@@ -5,7 +5,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <%
@@ -29,8 +28,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 	padding-right: 0;
 }
 </style>
-<!-- 컨텐츠 시작 -->
-<!-- 헤더 -->
 <section class="ftco-section ftco-agent">
 
  <div class="navbar justify-content-center navbar-dark bg-dark">
@@ -65,10 +62,8 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
       </div>
     </div>
 
-    <!-- 구인구직 시작-->
 	<section class="blog-section spad">
 	 <div class="row m-5">
-                 <!-- column -->
                  <div class="col-12">
                          <div class="m-5">
                              <div class="d-flex">
@@ -136,8 +131,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
                      </div>
                  </div>
              </section>
-    <!-- 구인구직 리스트 끝-->
-<!-- 컨텐츠 끝 -->
 <script>
 function recruitDetailFrm(recruit_no){
 	let no = recruit_no;
@@ -154,7 +147,6 @@ $("#recruitEnroll").click(function(){
 	}
 	else location.href="${pageContext.request.contextPath }/community/recruit/recruitEnrollForm.do";
 }); 
-//페이지 모아보기
 $(".all").click(function(){
 	location.href="${pageContext.request.contextPath }/community/recruit/recruitList.do";
 });

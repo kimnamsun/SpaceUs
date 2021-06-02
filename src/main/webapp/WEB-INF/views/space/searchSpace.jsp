@@ -4,10 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8"/>
-
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="pageTitle" />
 </jsp:include>
@@ -94,7 +91,6 @@ font-family: 'NEXON Lv1 Gothic OTF';
 @import url(https://raw.github.com/FortAwesome/Font-Awesome/master/docs/assets/css/font-awesome.min.css);
 
 #wrap {
-  /* margin: 50px 78px; */
   top: 2em;
   display: inline-block;
   position: relative;
@@ -159,18 +155,14 @@ $(function() {
     $("#searchInput").autocomplete({
         
         source : function( request, response ) {
-			//tag
        	 	$.ajax({
                  type: 'get',
                  url: "${pageContext.request.contextPath}/space/autocomplete.do",
                  dataType: "json",
                  data: {value : request.term},
                  success: function(data) {
-                     console.log(request.term);
-                     //서버에서 json 데이터 response 후 목록에 추가
                      response(
                          $.map(data, function(item) {  
-                             console.log(item);
                              return {
                              	label:item
                              }
@@ -179,15 +171,14 @@ $(function() {
                  }
             });             
              
-        },    // source 는 자동 완성 대상
-        select : function(event, ui) {    //아이템 선택시
-            console.log(ui.item);
+        },  
+        select : function(event, ui) {  
         },
-        focus : function(event, ui) {    //포커스 가면
-            return false;//한글 에러 잡기용도로 사용됨
+        focus : function(event, ui) {   
+            return false;
         },
-        minLength: 2,// 최소 글자수
-        autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+        minLength: 2,
+        autoFocus: true,
         classes: {  
             "ui-autocomplete": "highlight"
         },
@@ -201,7 +192,7 @@ $(function() {
 
 function searchSpace(){
 	var keyword = $(".searchInput").val();
-	var sort = $("select[name=space-sort]").val(); //all
+	var sort = $("select[name=space-sort]").val(); 
 	
 	keyword = keyword.replace('#','%23');
 	
@@ -234,11 +225,9 @@ function sortChange(obj){
 	var sort = $("select[name=space-sort]").val();
 	
 	if((category == null && location == null && option == null) || (category == "" && location == "" && option == "")){
-		//alert("키워드");
 		window.location.href='${pageContext.request.contextPath}/space/searchSpace.do?keyword='+keyword+"&sort="+ sort;
 	}
 	else{
-		//alert("세부입력");
 		window.location.href="${pageContext.request.contextPath}/space/searchDetailSpace.do?category="+category+"&location="+location+"&option="+option+"&sort="+sort;
 	}
 }
@@ -248,31 +237,23 @@ function sortChange(obj){
 
 
 <section class="ftco-section goto-here">
-	<!-- 컨텐츠 시작 -->
 <div class="hero-wrap ftco-degree-bg" style="background-image: url('${pageContext.request.contextPath }/resources/images/bg_1.jpg'); height: 600px" data-stellar-background-ratio="0.5">
 	<div class="overlay"></div>
 	<div class="container">
 		<div class="row no-gutters slider-text justify-content-center align-items-center">
  			<div class="col-lg-8 col-md-6 ftco-animate d-flex align-items-end">
  				<div class="text text-center mx-auto" style="margin-bottom:25%;">
- 					<!-- 검색결과 시작 -->
      				<div class="container col-md-12 heading-section text-center mb-5">
      					<input type="hidden" name="keyword" value="${keyword}"/>
     					<span class="txt_keyword" style="font-size:40px !important;">${ keyword }</span>
     					<span class="txt_result" style="font-size:20px !important;">(으)로 검색한 결과입니다.</span>
   					</div>
-  					<!-- 검색결과 끝 -->
- 
 					<div>
-						<!-- 검색시작 -->
 						<div id="wrap" style="width: 100%;">
 	  						<input id="searchInput" class="searchInput" name="search_keyword" placeholder="키워드를 입력하세요">
 	  						<input type="submit" class="btn btn-primary search-btn" value="입력" onclick="searchSpace();" />
-	  						<!-- <i class="fas fa-search fa-2x" style="color:#00C89E"></i> -->	
 						</div>
-						<!-- 검색끝 -->
     				</div>
-    				
   				</div>
 			</div>
 		</div>
@@ -282,12 +263,8 @@ function sortChange(obj){
 				<div class="mouse-wheel"><span class="ion-ios-arrow-round-down"></span></div>
 			</a>
 		</div>
-		
 	</div>
 </div>
-	<!-- 컨텐츠 끝 -->
-
-<!-- 옵션/카테고리/지역 선택 시작-->
 <div class="container">
 	<div class="search-form-content" style="margin-top:100px;">
 			<div class="flex-wrap">
@@ -295,7 +272,6 @@ function sortChange(obj){
 				<div class="search-category">지역</div>
 				<div class="search-category">옵션</div>
 				<form id="filter-search" class="filter-form">
-					<!-- 카테고리 선택 시작 -->
 					<select name="space_type" id="space_type" class="nice-select sm-width">
 						<option value=""  ${category == ''? 'selected':'' }>모든유형</option>
 						<option value="회의실" ${category == '회의실'? 'selected':'' }>회의실</option>
@@ -311,9 +287,6 @@ function sortChange(obj){
 						<option value="독립 오피스" ${category == '독립 오피스'? 'selected':'' }>독립 오피스</option>
 						<option value="코워커 스페이스"  ${category == '코워커 스페이스'? 'selected':'' }>코워커 스페이스</option>	
 					</select>
-					<!-- 카테고리 선택 끝-->
-					
-					<!-- 지역 선택 시작 -->
 					<select name="space_location" id="space_location" class="nice-select sm-width">		
 						<option value="" ${location == ''?'selected':''}>모든 지역</option>
 						<option value="서울" ${location == '서울'?'selected':''}>서울특별시</option>
@@ -321,9 +294,6 @@ function sortChange(obj){
 						<option value="경기" ${location == '경기'?'selected':''}>경기도</option>
 						<option value="강원" ${location == '강원'?'selected':''}>강원도</option>
 					</select>
-					<!-- 지역 선택 끝-->
-					
-					<!-- 옵션 선택 시작 -->
 					<select name="space_option" id="space_option" class="nice-select sm-width">		
 						<option value="" ${option == ''?'selected':''}>모든 옵션</option>
 						<option value="TV/프로젝터" ${option == 'TV/프로젝터'?'selected':''}>TV/프로젝터</option>
@@ -347,22 +317,14 @@ function sortChange(obj){
 						<option value="전신거울" ${option == '전신거울'?'selected':''}>전신거울</option>
 						<option value="바베큐시설" ${option == '바베큐시설'?'selected':''}>바베큐시설</option>
 					</select>
-					<!-- 옵션 선택 끝 -->
-					
-					
 				</form>				
 				<div class="container">
-					<!-- <button type="submit" class="search-btn search-detail" onclick="searchDetailSpace();">검색</button> -->
 					<input type="submit" value="검색" onclick="searchDetailSpace();" class="search-btn btn btn-primary search-detail" />
 				</div>
 			</div>
 	</div>
 </div>
-<!-- 옵션/카테고리/지역 선택 끝 -->
-
 <hr />
-   
-<!-- 리스트 정렬 순서 시작 -->   
 <div class="container">
 	<div class="sort-wrap" name="sort-wrap">
 		<select name="space-sort" id="space-sort" class="nice-select" onchange="sortChange(this.value);">
@@ -373,10 +335,6 @@ function sortChange(obj){
 		</select>
 	</div>
 </div>
-<!-- 리스트 정렬 순서 끝 -->     
-
-
-<!-- 공간 리스트 시작 -->
 <div class="container search-result">
     <c:if test="${!empty spaceList}">
     <div class="row">
@@ -393,9 +351,9 @@ function sortChange(obj){
 		    						<fmt:formatNumber value="${space.starAvg}" pattern="0.0" type="number"/>
 	    						</c:if>
 	    						<c:if test="${space.starAvg == 0 }">0</c:if>
-	    					</li><!-- 평균 별점 수 -->
-	    					<li><span class="icon-heart"></span>${space.likeCnt }</li> <!-- 좋아요 수 -->
-	    					<li><span class="icon-comments"></span>${space.reviewCnt}</li><!-- 리뷰 수 -->
+	    					</li>
+	    					<li><span class="icon-heart"></span>${space.likeCnt }</li> 
+	    					<li><span class="icon-comments"></span>${space.reviewCnt}</li>
 	    				</ul>
 	    				<h3><a href="${pageContext.request.contextPath }/space/spaceDetail.do?spaceNo=${space.spaceNo}">${space.spaceName}</a></h3>
 	    				<small><span class="icon-my_location">${space.address}</span></small>
@@ -417,6 +375,5 @@ function sortChange(obj){
 	</c:if>
 	
 </div>
-<!-- 공간 리스트 끝-->
 </section>	
 <jsp:include page="/WEB-INF/views/common/footer1.jsp" />

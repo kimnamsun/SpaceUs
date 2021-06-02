@@ -5,7 +5,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
@@ -21,7 +20,6 @@ font-family: 'NEXON Lv1 Gothic OTF';
 @import url(https://raw.github.com/FortAwesome/Font-Awesome/master/docs/assets/css/font-awesome.min.css);
 
 #wrap {
-  /* margin: 50px 78px; */
   top: 2em;
   display: inline-block;
   position: relative;
@@ -139,8 +137,6 @@ font-family: 'NEXON Lv1 Gothic OTF';
 }
 #disapear {display: none;}
 
-/*  내가 추가 한 것 */
-
 </style>
 
 <script type="text/javascript">
@@ -149,15 +145,12 @@ $(function() {
     $("#searchInput").autocomplete({
         
         source : function( request, response ) {
-			//tag
        	 	$.ajax({
                  type: 'get',
                  url: "${pageContext.request.contextPath}/space/autocomplete.do",
                  dataType: "json",
                  data: {value : request.term},
                  success: function(data) {
-                     console.log(request.term);
-                     //서버에서 json 데이터 response 후 목록에 추가
                      response(
                          $.map(data, function(item) {  
                              console.log(item);
@@ -169,15 +162,15 @@ $(function() {
                  }
             });             
              
-        },    // source 는 자동 완성 대상
-        select : function(event, ui) {    //아이템 선택시
+        },    
+        select : function(event, ui) {    
             console.log(ui.item);
         },
-        focus : function(event, ui) {    //포커스 가면
-            return false;//한글 에러 잡기용도로 사용됨
+        focus : function(event, ui) {    
+            return false;
         },
-        minLength: 2,// 최소 글자수
-        autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+        minLength: 2,
+        autoFocus: true,
         classes: {  
             "ui-autocomplete": "highlight"
         },
@@ -209,15 +202,7 @@ function group(){
 function meeting(){
 	window.location.href="${pageContext.request.contextPath}/exhibition/exhibitionList.do?tagNo=TAG204";
 }
-/* function work(){
-	window.location.href="${pageContext.request.contextPath}/community/recruit/recruitList.do";
-}
-function group(){
-	window.location.href="${pageContext.request.contextPath}/community/group/groupList.do";
-} */
 </script>
-
-<!-- 컨텐츠 시작 -->
 
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="top:12%;">
   <div class="carousel-inner">
@@ -245,7 +230,6 @@ function group(){
         <button type="submit" class="btn-lg btn btn-black font-18 mt-4" style="border-radius: 100px;" onclick="meeting();">바로가기</button>
       </div>	
     </div>
-    <!-- 커뮤니티 -->
     <div class="carousel-item" style="height: 500px;">
       <img src="${pageContext.request.contextPath }/resources/images/work.jpg" class="d-block w-100" style="opacity: .5;">
       <div class="carousel-caption d-none d-md-block" style="top: 6em;">
@@ -262,7 +246,6 @@ function group(){
         <button type="submit" class="btn-lg btn btn-black font-18 mt-4" style="border-radius: 100px;" onclick="group();">바로가기</button>
       </div>	
     </div>
-    <!-- /커뮤니티 -->
   </div>
   <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -274,7 +257,6 @@ function group(){
   </a>
 </div>
 
-<!-- 검색창 시작 -->
 <section class="ftco-section goto-here search-section spad">
  <div class="container">
     	<div class="row justify-content-center align-items-center">
@@ -292,13 +274,7 @@ function group(){
        			</div>
      		</div>
    		</div>
-  <!-- <div class="mouse">
-	<a href="#" class="mouse-icon">
-		<div class="mouse-wheel"><span class="ion-ios-arrow-round-down"></span></div>
-	</a>
-</div> -->
  </div>
-<!-- 옵션/카테고리/지역 선택 시작-->
 <div class="container">
 	<div class="search-form-content">
 		<div class="flex-wrap">
@@ -306,7 +282,6 @@ function group(){
 			<div class="search-category">지역</div>
 			<div class="search-category">옵션</div>
 			<form id="filter-search" class="filter-form">
-				<!-- 카테고리 선택 시작 -->
 				<select name="space_type" id="space_type" class="nice-select sm-width">
 					<option value="">모든유형</option>
 					<option value="회의실">회의실</option>
@@ -322,9 +297,6 @@ function group(){
 					<option value="독립 오피스">독립 오피스</option>
 					<option value="코워커 스페이스">코워커 스페이스</option>	
 				</select>
-				<!-- 카테고리 선택 끝-->
-				
-				<!-- 지역 선택 시작 -->
 				<select name="space_location" id="space_location" class="nice-select sm-width">		
 					<option value="">모든지역</option>
 					<option value="서울">서울특별시</option>
@@ -332,9 +304,6 @@ function group(){
 					<option value="경기">경기도</option>
 					<option value="강원">강원도</option>
 				</select>
-				<!-- 지역 선택 끝-->
-				
-				<!-- 옵션 선택 시작 -->
 				<select name="space_option" id="space_option" class="nice-select sm-width">		
 					<option value="">모든 옵션</option>
 					<option value="TV/프로젝터">TV/프로젝터</option>
@@ -358,7 +327,6 @@ function group(){
 					<option value="전신거울">전신거울</option>
 					<option value="바베큐시설">바베큐시설</option>
 				</select>
-				<!-- 옵션 선택 끝 -->
 			</form>
 			
 			<div class="container">
@@ -367,11 +335,8 @@ function group(){
 		</div>
 	</div>
 </div>
-<!-- 옵션/카테고리/지역 선택 끝 -->
-<!-- 검색창 끝 -->
 <br />
 <br />
-<!-- 추천공간 시작 -->
 	<div class="container">
 		<div class="row justify-content-center">
       <div class="col-md-12 heading-section text-center ftco-animate mb-5">
@@ -431,8 +396,6 @@ function group(){
     </div>
 	</div>
 </section>
-<!-- 추천공간 끝 -->
-<!-- 이용자리뷰 시작 -->
     <section class="ftco-section ftco-no-pt">
       <div class="container">
         <div class="row justify-content-center mb-5">
@@ -445,7 +408,6 @@ function group(){
          
       </div>
     </section>	
-<!-- 이용자리뷰 끝-->
 <script>
 $(function () { 
 	memberId();
@@ -453,12 +415,10 @@ $(function () {
 $(function () { 
 	popular();
 }); 
-//이용자 리뷰 ajax 요청
 $(function () { 
 	review();
 }); 
 function review(){
-	console.log("리뷰function 실행");
 	$.ajax({
 		type:"GET",
 		url:"${pageContext.request.contextPath}/space/recentRev.do",
@@ -470,20 +430,15 @@ function review(){
 				var html="";
 				
 				 var date = new Date(item.enrollDate);
-				 /**
-				  *  yyyy년 MM 월 dd일 포맷으로 반환
-				  */
 				 function getFormatDate(date){
-				     var year = date.getFullYear();              //yyyy
-				     var month = (1 + date.getMonth());          //M
-				     month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
-				     var day = date.getDate();                   //d
-				     day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
-					 	
+				     var year = date.getFullYear();
+				     var month = (1 + date.getMonth());
+				     month = month >= 10 ? month : '0' + month;
+				     var day = date.getDate();                 
+				     day = day >= 10 ? day : '0' + day;        
 						
-				     return ' '+year + '년 ' + month + '월 ' + day + '일 ';       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
+				     return ' '+year + '년 ' + month + '월 ' + day + '일 ';   
 				 }
-				/* html += for(var i=0; i<${item.starRating}; i++){+"<span class=\"icon-star\"></span>"+}; */
 				html  +=  "<div class=\"col-md-3 d-flex\">";
 	          	html  += "<div class=\"blog-entry justify-content-end\">";
           	    html  += "<div class=\"text\">";
@@ -496,7 +451,6 @@ function review(){
           		html  += "</div>";
           		html += "<p style=\"margin-top:10px; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 3; display: -webkit-box;\"  >"+item.content+"</p>";
           		html  += "</div></div></div>";
-				/* console.log(html); */
 				$("#review-wrapper").append(html);
 			}); 
 		},error:function(){
@@ -507,8 +461,6 @@ function review(){
 		
 function searchSpace(){
 	var keyword = $(".searchInput").val();
-	//alert(keyword);
-
 	keyword = keyword.replace('#','%23');
 	
 	if(keyword == null || keyword == ''){
@@ -537,10 +489,8 @@ function popular(){
 		url : "${ pageContext.request.contextPath }/space/selectPopularSpaces.do",
 		dataType : "json",
 		success : function(data){
-			console.log(data.list);
 			 $.each(data.list, function(i, list){
 				$(".pop"+i).before("<a href='${pageContext.request.contextPath }/space/spaceDetail.do?spaceNo="+list.spaceNo+"'>");
-				//$("link_"+i).append("<a href='${pageContext.request.contextPath }/space/spaceDetail.do?spaceNo="+list.spaceNo+"'>");
 				$(".pop"+i).addClass('img').css("background-image", "url(${pageContext.request.contextPath }/resources/upload/space/"+list.renamedFilename+")")
 				$(".pop"+i).after("</a>");
 				$(".price"+i).append(list.hourlyPrice);
@@ -549,7 +499,6 @@ function popular(){
 				$(".star"+i).append(list.reviewCnt);
 				$(".title"+i).append("<a href='${pageContext.request.contextPath }/space/spaceDetail.do?spaceNo="+list.spaceNo+"'>"+list.spaceName+"</a>");
 				$(".location"+i).append(list.address);
-				
 			 });
 		},
 		error : function(xhr, status, err){
@@ -560,11 +509,8 @@ function popular(){
 
 </script>
 
-<!-- 컨텐츠 끝 -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
-<!-- autocomplete -->
-<!-- CSS , JS -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

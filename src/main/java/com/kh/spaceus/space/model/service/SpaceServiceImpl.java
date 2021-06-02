@@ -62,19 +62,13 @@ public class SpaceServiceImpl implements SpaceService{
 	@Override
 	public int insertReview(Review review) {
 		int result = 0;
-		
-		//1. review테이블에 insert
 		result = spaceDAO.insertReview(review);
 		
-		//2. attachment테이블에 insert
-		//첨부파일수만큼 행 추가
 		List<ReviewAttachment> attachList = review.getReviewAtt();
 		
-		//첨부파일이 있는 경우
 		if(attachList != null) {
 			for(ReviewAttachment attach : attachList) {
 				attach.setReviewNo(review.getReviewNo());
-				log.debug("attach = {}", attach);
 				result = spaceDAO.insertReviewAttahment(attach);
 			}
 		}
@@ -96,8 +90,6 @@ public class SpaceServiceImpl implements SpaceService{
 	public Star selectStar(String spaceNo) {
 		return spaceDAO.selectStar(spaceNo);
 	}
-
-
 
 	@Override
 	public Space selectOneSpaceNo(String email) {
@@ -133,14 +125,10 @@ public class SpaceServiceImpl implements SpaceService{
 		
 		List<Attachment> attachList = space.getAttachList();
 		
-		//첨부파일이 있는 경우
 		if(attachList != null) {
 			for(Attachment attach : attachList) {
 				attach.setSpaceNo(space.getSpaceNo());
-				
-				log.debug("attach = {}", attach);
 				result = spaceDAO.insertAttachment(attach);
-				
 			}
 		}
 		
@@ -255,8 +243,6 @@ public class SpaceServiceImpl implements SpaceService{
 		map.put("sort", sort);
 		return spaceDAO.selectSpaceNoList(map);
 	}
-	
-	
 
 	@Override
 	public Wish selectOneWish(Wish wish) {
@@ -307,10 +293,4 @@ public class SpaceServiceImpl implements SpaceService{
 	public int deleteSpace(String spaceNo) {
 		return spaceDAO.deleteSpace(spaceNo);
 	}
-	
-	/*@Override
-	public List<Space> selectListSpaceCollection(String email) {
-		return spaceDAO.selectListSpaceCollection(email);
-	}*/
-	
 }

@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8" />
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -45,11 +44,6 @@ span > a:hover{
 
 .space_list > li:hover{
 	text-decoration: none;
-/* 	list-style:none;
-	display: inline;
-	
-	letter-spacing: 1px;
-	padding: 1.5px; */
 }
 
 .space_list > li>.icon-won{
@@ -65,9 +59,6 @@ span > a:hover{
 
         <div class="page-wrapper">
             <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
                         <h4 class="text-themecolor ml-5">마이페이지</h4>
@@ -81,7 +72,6 @@ span > a:hover{
                         </div>
                     </div>
                 </div>
-				 <!-- 채팅 -->
 				 <div id="talkjs-container" style="background-color: rgba(0,0,0,0);margin-left: 300px; height: 500px; position: fixed; z-index: 10;box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px; display:none;">
 				    <i>Loading chat...</i>
 				</div> 
@@ -90,7 +80,6 @@ span > a:hover{
 					<button id="chatBtn">🧑</button>
 				</div>
 				</sec:authorize>
-                <!-- 위시리스트 -->  
                 <div id="wishListPage" class="ml-5 mr-5">
 	                <div class="card p-4">
 		                <div class="card-body"">
@@ -156,35 +145,17 @@ span > a:hover{
 						  </div>
 						  
 						</div>
-<%-- 					<div class="container">
-			            <div class="container">
-			                 <nav class="mt-5" >
-								<ul class="justify-content-center pagination">${ pageBar }</ul>
-							</nav>
-			 			</div>
-					 </div> --%>
 						</div>
 					</div>
-					
 				</div>
-                <!-- 위시리스트 끝 -->
     </div>
 
 
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap popper Core JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/popper/popper.min.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/perfect-scrollbar.jquery.min.js"></script>
-<!--Wave Effects -->
 <script src="${ pageContext.request.contextPath }/resources/js/waves.js"></script>
-<!--Menu sidebar -->
 <script src="${ pageContext.request.contextPath }/resources/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/custom.min.js"></script>
-<!-- ============================================================== -->
-<!-- This page plugins -->
-<!-- ============================================================== -->
-<!--morris JavaScript -->

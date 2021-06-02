@@ -28,11 +28,10 @@ public class Member implements Serializable, UserDetails{
 	private String nickName;
 	private String memberPhone;
 	private String birthDay; 
-	private Date memberRegDate; //가입일
-	private int attendanceCnt; //출석횟수
-	private int today; //오늘출석여부
-	private List<SimpleGrantedAuthority> authorities; //권한 ('U', 'H', 'A')
-	
+	private Date memberRegDate;
+	private int attendanceCnt;
+	private int today;
+	private List<SimpleGrantedAuthority> authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

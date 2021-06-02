@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration
+	xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<!-- Appenders -->
-	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+	<appender name="console"
+		class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
 		</layout>
 	</appender>
-	
-	<!-- Application Loggers -->
+
 	<logger name="com.kh.spaceus">
-		<level value="INFO"/> <!-- 인터셉터 확인하시고 싶으신 분은 이 부분을 trace 또는 debug로 바꾸세요 -->
+		<level value="INFO" />
 	</logger>
-	
-	<!-- log4jdbc logger -->
+
 	<logger name="jdbc.sqlonly">
-		<level value="INFO"/>
+		<level value="INFO" />
 	</logger>
 	<logger name="jdbc.resultsettable">
-		<level value="INFO"/>
-</logger>
-	
-	<!-- 3rdparty Loggers -->
+		<level value="INFO" />
+	</logger>
+
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.beans">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.context">
 		<level value="info" />
 	</logger>
@@ -40,11 +38,10 @@
 		<level value="info" />
 	</logger>
 
-	<!-- Root Logger -->
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />
 		<appender-ref ref="fileLogger" />
 	</root>
-	
+
 </log4j:configuration>

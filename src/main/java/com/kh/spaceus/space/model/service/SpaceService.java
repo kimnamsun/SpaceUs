@@ -93,9 +93,6 @@ public interface SpaceService {
 
 	Wish selectOneWish(Wish wish);
 
-	//물어보기
-	/* List<Space> selectSearchSpaceList(String searchSpace); */
-
 	Attachment selectPopularImage(String spaceNo);
 
 	List<SpaceList> selectSearchSpaceList(String searchSpace);
@@ -113,8 +110,4 @@ public interface SpaceService {
 	int selectHostReviewTotalContents(String spaceNo);
 
 	int deleteSpace(String spaceNo);
-
-	/* List<Space> selectListSpaceCollection(String email); */
-
-
 }

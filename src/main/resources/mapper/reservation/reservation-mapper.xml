@@ -3,7 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="reservation">
-<!-- avail -->
 	<select id="selectListAvail" resultType="reservationAvail">
         select 
 			* 
@@ -32,7 +31,6 @@
 			space_no=#{spaceNo}
 	</delete>
 	
-<!-- reservation -->
 	<insert id="insertReservation">
 		insert into
 			reservation
@@ -162,7 +160,6 @@
 			space_no=(select space_no from space where member_email = #{ memberEmail })
 	</select>
 	
-	<!-- 페이징 처리 -->
 	<select id="reservationPaging" resultMap="reservationMap">
 		select
 			*
@@ -247,14 +244,3 @@
 	</delete>
 	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-

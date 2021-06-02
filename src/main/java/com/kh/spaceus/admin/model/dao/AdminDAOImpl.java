@@ -21,16 +21,15 @@ import com.kh.spaceus.space.model.vo.Space;
 
 @Repository
 public class AdminDAOImpl implements AdminDAO {
-	
+
 	@Autowired
 	private SqlSessionTemplate session;
 
 	@Override
 	public List<ManageMember> selectList(int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("admin.selectList",null,rowBounds);
+		return session.selectList("admin.selectList", null, rowBounds);
 	}
-	
 
 	@Override
 	public int selectTotalCnt() {
@@ -40,40 +39,35 @@ public class AdminDAOImpl implements AdminDAO {
 	@Override
 	public List<ManageMember> findUserIdList(String searchKeyword, int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("admin.findUserIdList", searchKeyword,rowBounds);
+		return session.selectList("admin.findUserIdList", searchKeyword, rowBounds);
 	}
-	
+
 	@Override
 	public int selectUserIdCnt(String searchKeyword) {
 		return session.selectOne("admin.selectUserIdCnt");
 	}
 
-
 	@Override
 	public List<ManageMember> findUserNameList(String searchKeyword, int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("admin.findUserNameList", searchKeyword,rowBounds);
+		return session.selectList("admin.findUserNameList", searchKeyword, rowBounds);
 	}
-
 
 	@Override
 	public int selectUserNameCnt(String searchKeyword) {
 		return session.selectOne("admin.selectUserNameCnt");
 	}
 
-	
 	@Override
 	public List<ManageMember> findUserRoleList(String searchKeyword, int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("admin.findUserRoleList", searchKeyword, rowBounds);
 	}
 
-
 	@Override
 	public int selectUserRoleCnt(String searchKeyword) {
 		return session.selectOne("admin.selectUserRoleCnt", searchKeyword);
 	}
-
 
 	@Override
 	public List<ManageBlackList> selectGroupList() {
@@ -87,7 +81,7 @@ public class AdminDAOImpl implements AdminDAO {
 
 	@Override
 	public List<Report> selectReasonList(String reportBoardNo) {
-		return session.selectList("admin.selectReasonList",reportBoardNo);
+		return session.selectList("admin.selectReasonList", reportBoardNo);
 	}
 
 	@Override
@@ -139,7 +133,4 @@ public class AdminDAOImpl implements AdminDAO {
 	public int updateHost(Space param1) {
 		return session.update("admin.updateHost", param1);
 	}
-	
-	
-	
 }

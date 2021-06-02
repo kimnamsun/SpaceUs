@@ -15,7 +15,7 @@ import com.kh.spaceus.community.group.model.vo.GroupBoard;
 
 @Service
 public class GroupServiceImpl implements GroupService {
-	
+
 	@Autowired
 	private GroupDAO groupDAO;
 
@@ -26,12 +26,12 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public List<GroupBoard> selectListGroupBoard(int limit, int offset) {
-		return groupDAO.selectListGroupBoard(limit,offset);
+		return groupDAO.selectListGroupBoard(limit, offset);
 	}
 
 	@Override
 	public List<GroupBoard> selectSortedListGroupBoard(Map<String, String> listMap, int limit, int offset) {
-		return groupDAO.selectSortedListGroupBoard(listMap,limit,offset);
+		return groupDAO.selectSortedListGroupBoard(listMap, limit, offset);
 	}
 
 	@Override
@@ -128,10 +128,4 @@ public class GroupServiceImpl implements GroupService {
 	public int updateReportCnt(String groupBoardCommentNo) {
 		return groupDAO.updateReportCnt(groupBoardCommentNo);
 	}
-
-	
-	
-	
-	
-
 }

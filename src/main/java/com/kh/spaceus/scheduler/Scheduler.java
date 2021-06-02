@@ -41,46 +41,30 @@ public class Scheduler {
 	@Autowired
 	private ReservationService reservationService;
 	
-	/** 
-	 * cron표현식 초 분 시 일 월 요일 년(생략가능)
-	 */
 	@Scheduled(cron = "0 0 0 1 1 *")
 	public void yearlyScheduler(){ 
-		//년별 정산내역 db 저장"
 		int result = hostService.insertYearlySettlement(); 
 	}
 	
 	@Scheduled(cron = "0 0 0 1 * *")
 	public void monthlyScheduler(){ 
-		//출석 쿠폰 발급
 		int result1 = memberService.insertAttend2Coupon();
 		int result2 = memberService.insertAttend3Coupon();
-		
-		//출석데이터 삭제
 		int result3 = memberService.deleteAttendance();
-		
-		//월별 정산내역 db 저장
 		int result4 = hostService.insertMonthlySettlement(); 
 	}
 
 	@Scheduled(cron ="0 0 0 * * *") 
 	public void dailyScheduler(){ 
-		//생일 쿠폰 발급 
 		int result1 = memberService.insertBtdCoupon();
-		
-		//당일 출첵 여부 초기화 
 		int result2 = memberService.deleteToday();
-		
-		//사용기간 만료 쿠폰 삭제 
 		int result3 = memberService.deleteCoupon();
-		
-		//정산내역 db 저장
+
 		List<String> list = hostService.selectReservationSpaceNo();
 		for(String str : list) {
 			 int result4 = hostService.insertSettlement(str); 
 		}
-		
-		//공간 사용완료 업데이트 
+
 		int result5 = reservationService.updateComple();
 	} 
 	

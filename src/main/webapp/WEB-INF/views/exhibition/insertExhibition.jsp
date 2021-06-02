@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <style>
@@ -41,7 +40,6 @@ $(function(){
    		var file = $(this).prop("files")[0];
    		var $label = $(this).next('.custom-file-label');
 
-   		//label에 쓰기
    		if(file == undefined)
    			$label.html("이미지를 선택하세요.");
    		else 
@@ -121,7 +119,6 @@ $(function(){
       	<span class="subheading">SpaceUs MD가 큐레이션한 기획전 입니다</span>
         <h2 class="mb-2">기획전 등록</h2>
       </div>
-<!-- 기획전 등록폼 시작-->
 <section class="property-submit-section spad m-5">
     <div class="container ">
         <div class="row m-5">
@@ -149,8 +146,6 @@ $(function(){
 							    </div>
 						    </div>
                         </div>
-                      
-                       
                         <div class="pf-title">
                             <h4>이미지 등록<span class="text-danger">*</span></h4>
                         </div>
@@ -182,7 +177,6 @@ $(function(){
         </div>
     </div>
 </section>
-<!-- 기획전 등록폼 끝-->
      </div>
      </section>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

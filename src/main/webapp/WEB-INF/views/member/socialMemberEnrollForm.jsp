@@ -168,8 +168,6 @@
 
 </body>
 
-
-<!-- 서비스 이용약관 모달 시작 -->
 <div class="modal fade" id="modalLong1" tabindex="-1" role="dialog" aria-labelledby="ModalLongTitle1" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -211,8 +209,6 @@
     </div>
   </div>
 </div>
-<!-- 서비스 이용약관 모달 끝-->
-<!-- 개인정보 처리방침 모달 시작 -->
 <div class="modal fade" id="modalLong2" tabindex="-1" role="dialog" aria-labelledby="ModalLongTitle2" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -251,13 +247,7 @@
     </div>
   </div>
 </div>
-
-<!-- 개인정보 처리방침 모달 끝 -->
-
-
-
 <script>
-//비밀번호 체크
 $("#passwordChk").blur(function(){
 	var $p1 = $("#password"), $p2 = $("#passwordChk");
 	
@@ -269,10 +259,9 @@ $("#passwordChk").blur(function(){
 		$("#pw-alert").css('display', 'none');
 	}
 });
-//닉네임 검사
+
 $("#nickName").blur(function(){
 
-	//닉네임 유효성검사 : 공백 입력불가
 	if($(this).val().search(/\s/) != -1) {
 		$(".nickNameRegex").show();
 		$("#nickNameValid").val(0);
@@ -311,7 +300,6 @@ $(function(){
 	
 	var text;
 
-	//문자인증
 	$(".phone-btn").click(function(){
 
 		$.ajax({
@@ -323,8 +311,6 @@ $(function(){
 			dataType : "json",
 			success : function(data){
 				text = data.text;
-				//console.log(text);
-				
 				if(data.text != undefined) {
 					alert("인증번호를 전송했습니다.");
 				} else {
@@ -339,9 +325,6 @@ $(function(){
 	});
 
 	$("#phoneChk").blur(function(){
-
-		//console.log(text);
-		
 		if(text == $("#phoneChk").val()){
 			$(".phoneChk").hide();
 			$("#phoneValid").val(1);
@@ -354,11 +337,7 @@ $(function(){
 	});
 });
 
-//회원가입 버튼눌렀을때
 $("#memberEnrollFrm").submit(function(){
-
-	 
-	//휴대폰인증검사여부
 	var $phoneValid = $("#phoneValid");
 	if($phoneValid.val() == 0){
 		$alertDiv.show();
@@ -366,6 +345,5 @@ $("#memberEnrollFrm").submit(function(){
 	}
 	return true;
 });
-
 </script>
 </html>

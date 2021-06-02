@@ -12,8 +12,8 @@ import com.kh.spaceus.reservation.model.vo.ReservationAvail;
 import com.kh.spaceus.reservation.model.vo.Unselectable;
 
 @Service
-public class ReservationServiceImpl implements ReservationService{
-	
+public class ReservationServiceImpl implements ReservationService {
+
 	@Autowired
 	private ReservationDAO reservationDAO;
 
@@ -45,12 +45,10 @@ public class ReservationServiceImpl implements ReservationService{
 	public List<Reservation> selectListReservation(String email) {
 		return reservationDAO.selectListReservation(email);
 	}
-	
-	
-	
+
 	@Override
 	public List<Reservation> ingReservation(int limit, int offset, String email) {
-		return reservationDAO.ingReservation(limit,offset,email);
+		return reservationDAO.ingReservation(limit, offset, email);
 	}
 
 	@Override
@@ -112,13 +110,8 @@ public class ReservationServiceImpl implements ReservationService{
 	public int deleteReservation(String revNo) {
 		return reservationDAO.deleteReservation(revNo);
 	}
-	
+
 	public int updateComple() {
 		return reservationDAO.updateComple();
 	}
-
-	
-	
-	
-	
 }

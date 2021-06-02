@@ -17,19 +17,19 @@ import com.kh.spaceus.space.model.vo.Space;
 public interface AdminDAO {
 
 	List<ManageMember> selectList(int limit, int offset);
-	
+
 	int selectTotalCnt();
-	
+
 	List<ManageMember> findUserIdList(String searchKeyword, int limit, int offset);
 
 	List<ManageMember> findUserNameList(String searchKeyword, int limit, int offset);
-	
+
 	int selectUserIdCnt(String searchKeyword);
-	
+
 	List<ManageMember> findUserRoleList(String searchKeyword, int limit, int offset);
-	
+
 	int selectUserRoleCnt(String searchKeyword);
-	
+
 	int selectUserNameCnt(String searchKeyword);
 
 	List<ManageBlackList> selectGroupList();
@@ -57,5 +57,5 @@ public interface AdminDAO {
 	int updateStatus(Space param1);
 
 	int updateHost(Space param1);
-	
+
 }

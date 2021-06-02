@@ -116,8 +116,4 @@ public interface SpaceDAO {
 
 	int deleteSpace(String spaceNo);
 
-
-	/* List<Space> selectListSpaceCollection(String email); */
-
-
 }

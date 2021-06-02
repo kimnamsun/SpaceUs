@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -38,12 +37,11 @@
 	<script>
 	
 	if("카드결제" == "${ reservation.pay }"){
-		//아임포트
-		var IMP = window.IMP; // 생략가능
+		var IMP = window.IMP;
 		IMP.init('imp84323249');
 		
 		IMP.request_pay({
-		    pg : 'inicis', // version 1.1.0부터 지원.
+		    pg : 'inicis',
 		    pay_method : 'card',
 		    merchant_uid : 'merchant_' + new Date().getTime(),
 		    name : '${ space.spaceName }',
@@ -59,7 +57,6 @@
 		        msg += '결제 금액 : ' + rsp.paid_amount;
 		        msg += '카드 승인번호 : ' + rsp.apply_num;
 
-		        //$("[name=revNo]").val(rsp.imp_uid);
 		        $("[name=flag]").val("true");
 		       
 		    } else {
@@ -77,8 +74,7 @@
 	}
 	else{
 
-		//아임포트
-		var IMP = window.IMP; // 생략가능
+		var IMP = window.IMP; 
 		IMP.init('imp84323249');
 		
 		IMP.request_pay({
@@ -106,7 +102,6 @@
 		    	$("[name=flag]").val("false");
 		    }
 		    
-		    $("[name=revNo]").val(rsp.imp_uid);
 		    alert(msg);
 		    document.payment.submit();
 		});

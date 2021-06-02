@@ -37,31 +37,22 @@ public class ExhibitionController {
 	@Autowired
 	ServletContext servletContext;
 	
-	//기획전메인
 	@RequestMapping("/exhibition.do")
 	public ModelAndView exhibition(ModelAndView mav) {
 		
 		List<Exhibition> list = exhibitionService.selectExList();
-
-		System.out.println("@@@@@@@@"+list);
-		
 		mav.addObject("list", list);
-		
 		mav.setViewName("exhibition/exhibition");
 		
 		return mav;
 	}
 	
-	//기획전리스트
 	@RequestMapping("/exhibitionList.do")
 	public ModelAndView exhibitionList(@RequestParam("tagNo") String tagNo, ModelAndView mav) {
-		System.out.println(tagNo);
 		
 		List<SpaceList> exList = exhibitionService.selectByTagNo(tagNo);
-		
 		Exhibition exhibition = exhibitionService.selectOneByTag(tagNo);
-		
-		
+
 		mav.addObject("exhibition", exhibition);
 		mav.addObject("exList", exList);
 		mav.setViewName("exhibition/exhibitionList");
@@ -69,7 +60,6 @@ public class ExhibitionController {
 		return mav;
 	}
 
-	//기획전추가폼
 	@RequestMapping("/insertExhibitionFrm.do")
 	public String insertExhibitionFrm(Model model) {
 		List<ExhibitionTag> tagList = exhibitionService.selectTagList();
@@ -78,8 +68,6 @@ public class ExhibitionController {
 		return "exhibition/insertExhibition";
 	}
 	
-	
-	//이미지업로드
 	@RequestMapping(value = "/uploadImage.do",
 					method= RequestMethod.POST,
 					produces="text/plain;charset=UTF-8")
@@ -110,30 +98,18 @@ public class ExhibitionController {
 		return renamedFileName;
 	}
 	
-	//기획전추가
 	@GetMapping("/insertExhibition.do")
 	public String insertExhibition(Exhibition exhibition) {
 		
 		int result = exhibitionService.insertExhibition(exhibition);
-		
-		log.info("result = {}", result);
-		
 		return "redirect:exhibition.do";
 	}
 	
-	
-	//기획전삭제
 	@RequestMapping("/deleteExhibition")
 	public ModelAndView deleteExhibition(ModelAndView mav, @RequestParam("exNo") String exNo) {
 		
-		
 		Exhibition exhibition = exhibitionService.selectOne(exNo);
-		//log.info("exhibition = {}", exhibition);
-		
-		//삭제할 파일의 경로
 		String imagePath = servletContext.getRealPath("resources/upload/exhibition/" + exhibition.getRenamedFileName());
-		
-		//log.info("imagePath = {}", imagePath);
 		
 		File file = new File(imagePath);
 		if(file.exists() == true)

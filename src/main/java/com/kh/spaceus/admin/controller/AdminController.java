@@ -41,129 +41,105 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
-	
+
 	@Autowired
 	private MemberService memberService;
-	
-	//회원관리 폼
+
 	@RequestMapping("/memberManage.do")
-	public String memberManage(Model model,HttpServletRequest request, Principal principal,
-								@RequestParam(defaultValue = "1", value="cPage") int cPage) {
-		//페이징 처리
+	public String memberManage(Model model, HttpServletRequest request, Principal principal,
+			@RequestParam(defaultValue = "1", value = "cPage") int cPage) {
 		final int limit = 10;
-		int offset = (cPage -1) * limit;
-		
-		List<ManageMember> memberList = adminService.selectList(limit,offset);
-		log.info("memberList={}",memberList);
+		int offset = (cPage - 1) * limit;
+
+		List<ManageMember> memberList = adminService.selectList(limit, offset);
 		Member member = memberService.selectOneMember(principal.getName());
-		
+
 		model.addAttribute("member", member);
 		int totalCnt = adminService.selectTotalCnt();
 		String url = request.getRequestURI() + "?";
 		String pageBar = Utils.getPageBarHtml(cPage, limit, totalCnt, url);
-		log.info("totalCnt = {}", totalCnt);
-		
+
 		model.addAttribute("member", member);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageBar", pageBar);
 		model.addAttribute("memberList", memberList);
 		return "admin/memberManage";
 	}
-	
-	//Id로 입력시 회원목록 조회
+
 	@RequestMapping("/findUserList.do")
 	public String findUserList(Model model, @RequestParam String searchType, @RequestParam String searchKeyword,
-								HttpServletRequest request,@RequestParam(defaultValue = "1", value="cPage") int cPage) {
-		
-		//페이징 처리
+			HttpServletRequest request, @RequestParam(defaultValue = "1", value = "cPage") int cPage) {
+
 		final int limit = 10;
-		int offset = (cPage -1) * limit;
-		
+		int offset = (cPage - 1) * limit;
+
 		List<ManageMember> memberList = null;
 		int totalCnt = 0;
 		String url = null;
-		if(searchType.equals("userId")) {
-			memberList = adminService.findUserIdList(limit,offset,searchKeyword);
-			log.info("memberList = {}", memberList);
+		if (searchType.equals("userId")) {
+			memberList = adminService.findUserIdList(limit, offset, searchKeyword);
 			totalCnt = adminService.selectUserIdCnt(searchKeyword);
-			url= request.getRequestURI() + "?searchType=userId&searchkeyword="+ searchKeyword + "&";
-		}
-		else if(searchType.equals("userName")) {
-			memberList = adminService.findUserNameList(limit,offset,searchKeyword);						
-			log.info("memberList = {}", memberList);
+			url = request.getRequestURI() + "?searchType=userId&searchkeyword=" + searchKeyword + "&";
+		} else if (searchType.equals("userName")) {
+			memberList = adminService.findUserNameList(limit, offset, searchKeyword);
 			totalCnt = adminService.selectUserNameCnt(searchKeyword);
-			url= request.getRequestURI() + "?searchType=userName&searchkeyword="+searchKeyword+"&";
-		}
-		else if(searchType.equals("userRole")) {
-			if(searchKeyword.equals("total")) {
-				memberList = adminService.selectList(limit,offset);
+			url = request.getRequestURI() + "?searchType=userName&searchkeyword=" + searchKeyword + "&";
+		} else if (searchType.equals("userRole")) {
+			if (searchKeyword.equals("total")) {
+				memberList = adminService.selectList(limit, offset);
 				totalCnt = adminService.selectTotalCnt();
 				url = request.getRequestURI() + "?searchType=userRole&searchKeyword=total&";
-			}else{
-				memberList = adminService.findUserRoleList(limit,offset,searchKeyword);
+			} else {
+				memberList = adminService.findUserRoleList(limit, offset, searchKeyword);
 				totalCnt = adminService.selectUserRoleCnt(searchKeyword);
-				url= request.getRequestURI() + "?searchType=userRole&searchKeyword="+searchKeyword+"&";
+				url = request.getRequestURI() + "?searchType=userRole&searchKeyword=" + searchKeyword + "&";
 			}
 		}
-		
+
 		String pageBar = Utils.getPageBarHtml(cPage, limit, totalCnt, url);
-				
+
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pageBar", pageBar);
 		return "admin/memberManage";
 	}
-	
-	//공간관리 폼
+
 	@RequestMapping("/spaceManage.do")
 	public String spaceManage(Model model) {
 		List<ManageSpace> spaceList = adminService.selectSpaceList();
-		
 		model.addAttribute("spaceList", spaceList);
 		return "admin/spaceManage";
 	}
-	
-	//블랙리스트관리 폼
+
 	@RequestMapping("/blackListManage.do")
 	public String blackListManage(Model model) {
 		List<ManageBlackList> groupList = adminService.selectGroupList();
 		List<ManageBlackList> recruitList = adminService.selectRecruitList();
 		List<GroupBoard> gbList = adminService.selectGBList();
 		List<ManageRecruit> rList = adminService.selectrList();
-		
+
 		model.addAttribute("groupList", groupList);
 		model.addAttribute("recruitList", recruitList);
 		model.addAttribute("gbList", gbList);
 		model.addAttribute("rList", rList);
 		return "admin/blackListManage";
 	}
-	
-	
-	@GetMapping(value="/reasonList.do",
-				produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+
+	@GetMapping(value = "/reasonList.do", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<Report> reasonList(Model model, @RequestParam String boardNo) {
-		log.info("boardNo={}",boardNo);
 		List<Report> reasonList = adminService.selectReasonList(boardNo);
-		log.info("reasonList={}",reasonList);
-		
 		return reasonList;
 	}
-	
+
 	@RequestMapping("confirmSpaceFrm.do")
 	public String confirmSpaceFrm(@RequestParam String spaceNo, Model model) {
-		log.info("spaceNo = {}", spaceNo);
-		//space
 		List<Space> spaceOneList = adminService.selectSpaceOneList(spaceNo);
-		//image
 		List<ConfirmSpace> spaceOneImageList = adminService.selectSpaceOneImageList(spaceNo);
-		//category
 		List<Category> spaceOneCategory = adminService.selectSpaceOneCategory(spaceNo);
-		//tag
 		List<ConfirmSpaceTag> spaceOneTagList = adminService.selectSpaceOneTagList(spaceNo);
-		//option
-		List<ConfirmSpaceOption> spaceOneOptionList = adminService.selectSpaceOptionList(spaceNo); 
-		
+		List<ConfirmSpaceOption> spaceOneOptionList = adminService.selectSpaceOptionList(spaceNo);
+
 		model.addAttribute("spaceOneList", spaceOneList);
 		model.addAttribute("sapceOneImageList", spaceOneImageList);
 		model.addAttribute("spaceOneCategory", spaceOneCategory);
@@ -171,16 +147,11 @@ public class AdminController {
 		model.addAttribute("spaceOneOptionList", spaceOneOptionList);
 		return "admin/confirmSpaceFrm";
 	}
-	
+
 	@PostMapping("spaceConfirm.do")
 	@ResponseBody
 	public void spaceConfirm(@ModelAttribute Space param1) {
-		log.info("param1={}",param1);
-		//status update
 		int result1 = adminService.updatdStatus(param1);
-		//host
 		int result2 = adminService.updateHost(param1);
-		
 	}
-	
 }

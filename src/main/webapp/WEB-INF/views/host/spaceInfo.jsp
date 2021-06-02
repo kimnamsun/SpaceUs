@@ -5,7 +5,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
@@ -15,9 +14,6 @@
 
         <div class="page-wrapper">
             <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
                         <h4 class="text-themecolor ml-5">호스트 센터</h4>
@@ -31,7 +27,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- 회원정보 -->
                 <div id="profileEditPage" class="ml-5 mr-5">
                     <div class="card p-5">
                        <div class="card-body">
@@ -72,8 +67,6 @@
 						      <td><input type="text" class="col-8 input-group-text mb-4 pull-right" maxlength="11" value="${space.address }" readonly /></td>
 							</tr>
 						</table >
-						
-						<!-- 공간수정 -->
 						<hr />
 		                <div class="panel panel-default">
 		                	<div class="panel-heading" role="tab">
@@ -228,7 +221,6 @@
 					  		</div>
 						</div>
 						  
-						  <!-- 공간삭제 -->
 						  <hr />
 			                <div class="panel panel-default">
 								<div class="panel-heading" role="tab">
@@ -249,8 +241,6 @@
 	                   </div>
 	               </div>
 	           </div>
-
-                <!-- 회원정보 끝 -->
     </div>
 </div>
 </div>
@@ -271,10 +261,8 @@ var first;
 var flag=0;
 var optionArr = new Array();
 $(function(){
-	/* 기존 옵션 */
 	<c:forEach items="${optionList}" var="option">
 		var str = "${option.optionNO}";
-		//console.log(str);
 		$("#"+str).addClass("bg-primary");
 		optionArr.push(str);
 	</c:forEach>
@@ -284,13 +272,9 @@ $(function(){
    	   	oStr += optionArr[i]+",";
    	   	
    	$("[name=optionNo]").val(oStr);
-   	//console.log($("[name=optionNo]").val());
-   	//console.log($("[name=status]").val());
 
-   	/* 기존 시간 */
    	<c:forEach items="${revAvail}" var="rev">
 		var index = dayTime.findIndex(obj => obj.day == "${rev.day}");
-		console.log(index);
 		dayTime[index].startHour = ${rev.startHour};
 		dayTime[index].endHour = ${rev.endHour};
 		
@@ -299,12 +283,11 @@ $(function(){
 	document.getElementById('mon').checked = true;
 	day=0;
 	
-	//셀 색 지우기
 	for(var i=0; i<33; i++)
 		$("#"+i).removeClass("bg-primary");
 
 	var s=dayTime[0].startHour;
-	//요일에 맞춰 색채우기
+
 	if(s == dayTime[0].endHour){
 		flag=0;
 		return;
@@ -317,14 +300,9 @@ $(function(){
 	flag=2;
 	for(var i=s; i<=dayTime[0].endHour; i++)
 		$("#"+i).addClass("bg-primary");
-
-	//console.log($("[name=optionNo]").val());
-	//console.log($("[name=status]").val());
-	
 });
 </script>
 
-<!-- option -->
 <script>
 $("#optionTb th").on("click", function(){
 	var $option = $(this).attr("id");
@@ -336,29 +314,21 @@ $("#optionTb th").on("click", function(){
     	$(this).addClass("bg-primary");
     	optionArr.push($option);
 	}
-   	//console.log(optionArr);
    	var oStr='';
    	for(var i=0; i<optionArr.length; i++)
    	   	oStr += optionArr[i]+",";
    	   	
    	$("[name=optionNo]").val(oStr);
-   	//console.log($("[name=optionNo]").val());
 });
 </script>
 
-<!-- 시간선택 script -->
 <script>
-//요일 선택클릭 이벤트
 $("#day input").on("click", function(){
-	//배열 인덱스 찾기
 	day = dayTime.findIndex(obj => obj.day == $(this).attr("id"));
-	//console.log(day);
-	//셀 색 지우기
 	for(var i=0; i<33; i++)
 		$("#"+i).removeClass("bg-primary");
 
 	var s=dayTime[day].startHour;
-	//요일에 맞춰 색채우기
 	if(s == dayTime[day].endHour){
 		flag=0;
 		return;
@@ -372,33 +342,26 @@ $("#day input").on("click", function(){
 	for(var i=s; i<=dayTime[day].endHour; i++)
 		$("#"+i).addClass("bg-primary");
 });
-//가능시간 클릭이벤트
+
 $("#availableTime th").on("click", function(){
-	//요일선택
 	if(day==null){
 		swal("요일을 먼저 선택해주세요");
 		return;
 	}
 	
 	flag++;
-	//초기화하기
 	if(flag==3){
 		flag=0;
-		//배열값 초기화
 		dayTime[day].startHour=-1;
 		dayTime[day].endHour=-1;
-		console.log(dayTime);
-		//셀 색 지우기
 		for(var i=0; i<33; i++)
     		$("#"+i).removeClass("bg-primary");
 		return;
 	};
-	//연속선택
+
 	if(flag==2){
-		//선택한 셀의 아이디 찾기
 		var last = Number($(this).attr("id"));
 
-		//셀 색 바꾸기
 		if(last == dayTime[day].startHour){
 			$(this).removeClass("bg-primary");
 			dayTime[day].startHour=-1;
@@ -410,30 +373,23 @@ $("#availableTime th").on("click", function(){
 			last = temp;
 		}
 
-		//셀 값 배열에 넣기
 		dayTime[day].startHour=first;
 		dayTime[day].endHour=last;
-		console.log(dayTime);
 		
 		for(var i=first; i<=last; i++)
 			$("#"+i).addClass("bg-primary");
 		return;
 	};
 
-	//선택한 셀의 아이디 찾기
 	first = Number($(this).attr("id"));
-	//셀 값 배열에 넣기
 	dayTime[day].startHour=first;
-	console.log(dayTime);
-	//셀 색 바꾸기
     $(this).addClass("bg-primary");
 });
 </script>
 
 <script>
-//제출전처리
+
 $("#spaceFrm").submit(function(){
-	//시간배열 넣기
 	var arr = ['월','화','수','목','금','토','일'];
 	var str = "";
 	for(var i=0; i<7; i++){
@@ -456,7 +412,7 @@ $("#spaceFrm").submit(function(){
 </script>
 
 <script>
-//탈퇴
+
 $("#deleteBtn").click(function(){
 	 if(!confirm("정말로 공간을 삭제하시겠습니까?")) return;
 	 $("#deleteFrm").submit();
@@ -465,21 +421,9 @@ $("#deleteBtn").click(function(){
 
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap popper Core JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/popper/popper.min.js"></script>
 <script src="${ pageContext.request.contextPath }/resources/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/perfect-scrollbar.jquery.min.js"></script>
-<!--Wave Effects -->
 <script src="${ pageContext.request.contextPath }/resources/js/waves.js"></script>
-<!--Menu sidebar -->
 <script src="${ pageContext.request.contextPath }/resources/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
 <script src="${ pageContext.request.contextPath }/resources/js/custom.min.js"></script>
-<!-- ============================================================== -->
-<!-- This page plugins -->
-<!-- ============================================================== -->
-<!--morris JavaScript -->
-
-
-	

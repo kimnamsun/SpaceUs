@@ -49,9 +49,4 @@ public class HostServiceImpl implements HostService {
 	public int insertYearlySettlement() {
 		return hostDAO.insertYearlySettlement();
 	}
-
-	
-
-
-
 }

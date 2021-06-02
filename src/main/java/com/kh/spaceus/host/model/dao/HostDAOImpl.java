@@ -21,8 +21,6 @@ public class HostDAOImpl implements HostDAO {
 	
 	@Override
 	public List<Qna> selectUnreplied(String hostId) {
-		log.debug("hostId = {}"+hostId);
-		
 		return session.selectList("host.selectUnreplied", hostId);
 	}
 
@@ -55,6 +53,4 @@ public class HostDAOImpl implements HostDAO {
 	public int insertYearlySettlement() {
 		return session.insert("host.insertYearlySettlement");
 	}
-
-	
 }

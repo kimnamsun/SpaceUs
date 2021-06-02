@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!-- 한글 인코딩처리 -->
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <style>
@@ -20,7 +19,6 @@
 input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
 #error, #duplicate, #ok{display: none;}
 </style>
-<!-- 컨텐츠 시작 -->
     <div class="hero-wrap ftco-degree-bg"
     	 style="background-image: url('${pageContext.request.contextPath }/resources/images/bg_2.jpg');
     	 		height: 400px"
@@ -36,8 +34,6 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
         </div>
       </div>
     </div>
-    <!-- Breadcrumb Section End -->
-    <!-- 공간 등록 폼 -->
     <section class="property-submit-section spad m-5">
         <div class="container ">
             <div class="row m-5">
@@ -299,57 +295,39 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
             </div>
         </div>
     </section>
-    <!-- Property Submit Section End -->
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
-
-
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<!-- 주소 script -->
 <script>
-	//주소검색
     function sample6_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+                var addr = ''; 
+                var extraAddr = '';
 
-                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                var addr = ''; // 주소 변수
-                var extraAddr = ''; // 참고항목 변수
-
-                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                if (data.userSelectedType === 'R') {
                     addr = data.roadAddress;
-                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                } else { 
                     addr = data.jibunAddress;
                 }
 
-                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
                 if(data.userSelectedType === 'R'){
-                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
                     if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
                         extraAddr += data.bname;
                     }
-                    // 건물명이 있고, 공동주택일 경우 추가한다.
                     if(data.buildingName !== '' && data.apartment === 'Y'){
                         extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
                     }
-                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
                     if(extraAddr !== ''){
                         extraAddr = ' (' + extraAddr + ')';
                     }
-                    // 조합된 참고항목을 해당 필드에 넣는다.
                     document.getElementById("sample6_extraAddress").value = extraAddr;
                 
                 } else {
                     document.getElementById("sample6_extraAddress").value = '';
                 }
 
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('sample6_postcode').value = data.zonecode;
                 document.getElementById("sample6_address").value = addr;
-                // 커서를 상세주소 필드로 이동한다.
                 document.getElementById("sample6_detailAddress").focus();
             }
         }).open();
@@ -362,20 +340,18 @@ input[type=file], .address-input {margin-bottom:20px; margin-top:10px;}
         }
     });
 
-  //주소 합치기
     $("#sample6_detailAddress").blur(function(){
     	$("[name=address]").val("우("+$("#sample6_postcode").val()+") "+$("#sample6_address").val()+" "+$("#sample6_extraAddress").val()+" "+$("#sample6_detailAddress").val());
     });
 </script>
 
-<!-- 전화번호script -->
 <script>
 $("#phone3").focus(function(){
    	if($("#phone1").val()==""){
    		document.getElementById("phone1").focus();
        }
 });
-//전화번호 합치기
+
 $("#phone2").blur(function(){
 	document.getElementById("phone3").focus();
 });
@@ -383,19 +359,16 @@ $("#phone3").blur(function(){
 	$("[name=spacePhone]").val($("#phone1").val()+$("#phone2").val()+$("#phone3").val());
 });
 </script>
-<!-- 카테고리, 옵션 script -->
+
 <script>
-//카테고리테이블 클릭이벤트
 $("#categoryTb th").on("click", function(){
 	if($("#categoryTb th").hasClass("bg-primary"))
     	$("#categoryTb th").removeClass("bg-primary");
 
    	$(this).addClass("bg-primary");
-   	//console.log($(this).attr("id"));
    	$("[name=categoryNo]").val($(this).attr("id"));
    	console.log($("[name=categoryNo]").val());
 });
-//옵션테이블 클릭이벤트
 var optionArr = new Array();
 $("#optionTb th").on("click", function(){
 	var $option = $(this).attr("id");
@@ -414,8 +387,6 @@ $("#optionTb th").on("click", function(){
    	$("[name=optionNo]").val(oStr);
 });
 </script>
-
-<!-- 시간선택 script -->
 <script>
 var dayTime = [
 	{ day: 'mon', startHour: -1, endHour: -1},
@@ -429,17 +400,12 @@ var dayTime = [
 var day;
 var first;
 var flag=0;
-//요일 선택클릭 이벤트
 $("#day input").on("click", function(){
-	//배열 인덱스 찾기
 	day = dayTime.findIndex(obj => obj.day == $(this).attr("id"));
-	//console.log(day);
-	//셀 색 지우기
 	for(var i=0; i<33; i++)
 		$("#"+i).removeClass("bg-primary");
 
 	var s=dayTime[day].startHour;
-	//요일에 맞춰 색채우기
 	if(s == dayTime[day].endHour){
 		flag=0;
 		return;
@@ -453,33 +419,25 @@ $("#day input").on("click", function(){
 	for(var i=s; i<=dayTime[day].endHour; i++)
 		$("#"+i).addClass("bg-primary");
 });
-//가능시간 클릭이벤트
 $("#availableTime th").on("click", function(){
-	//요일선택
 	if(day==null){
 		swal("요일을 먼저 선택해주세요");
 		return;
 	}
 	
 	flag++;
-	//초기화하기
 	if(flag==3){
 		flag=0;
-		//배열값 초기화
 		dayTime[day].startHour=-1;
 		dayTime[day].endHour=-1;
-		console.log(dayTime);
-		//셀 색 지우기
 		for(var i=0; i<33; i++)
     		$("#"+i).removeClass("bg-primary");
 		return;
 	};
-	//연속선택
+
 	if(flag==2){
-		//선택한 셀의 아이디 찾기
 		var last = Number($(this).attr("id"));
 
-		//셀 색 바꾸기
 		if(last == dayTime[day].startHour){
 			$(this).removeClass("bg-primary");
 			dayTime[day].startHour=-1;
@@ -491,37 +449,25 @@ $("#availableTime th").on("click", function(){
 			last = temp;
 		}
 
-		//셀 값 배열에 넣기
 		dayTime[day].startHour=first;
 		dayTime[day].endHour=last;
-		console.log(dayTime);
 		
 		for(var i=first; i<=last; i++)
 			$("#"+i).addClass("bg-primary");
 		return;
 	};
-
-	//선택한 셀의 아이디 찾기
 	first = Number($(this).attr("id"));
-	//셀 값 배열에 넣기
 	dayTime[day].startHour=first;
-	console.log(dayTime);
-	//셀 색 바꾸기
     $(this).addClass("bg-primary");
 });
 </script>
-
-<!-- 태그 script -->
 <script>
-//태그 추가 클릭이벤트
 $("#addTags").on('click', function(){
 	if($("#tagName").val()==""){swal("내용을 입력해주세요");};
 	if($("#tags span").length>=5){
 		swal("최대 5개까지 입력 가능합니다");
 	}
 	else if($("#tagName").val()!=""){
-		
-		//태그 인서트
 		$.ajax({
 		url : "${ pageContext.request.contextPath }/space/insertHashTag.do",
 		data : {
@@ -530,7 +476,6 @@ $("#addTags").on('click', function(){
 		,
 		dataType : "json",
 		success : function(data){
-			//태그 추가시 초기화 버튼 보이기
 			$("#refreshBtn").show();
 			$(".tags").append("<input type='checkbox' name='tag' style='display:none' value="+$('#tagName').val() +" checked/><span class='label label-success m-2 p-2'>#"+$('#tagName').val() +"</span>"); 
 	    	$("#tagName").val("");	
@@ -541,16 +486,12 @@ $("#addTags").on('click', function(){
 		});  
     }
 });
-//태그 삭제 클릭이벤트	
 $("#refreshBtn").on("click", function(){	
-	//추가된 태그 없을시 초기화 버튼 숨기기
 	$("#refreshBtn").css("display", "none");
 	$(".tags *").remove();	
 });	
 </script>
-<!-- 사업자등록 script -->
 <script>
-//사업자 등록정보 조회(중복조회)
 $("#businessNo").keyup(function(){
 	if(!/^[0-9]{10}$/.test($(this).val())){
 		$("#duplicate").hide();
@@ -566,8 +507,6 @@ $("#businessNo").keyup(function(){
 		},
 		dataType : "json",
 		success : function(data){
-			console.log(data);
-
 			if(data.isUsable == true){
 				$("#error").hide();
 				$("#duplicate").hide();
@@ -590,10 +529,7 @@ $("#businessNo").keyup(function(){
 </script>
 <script>
 
-//제출전처리
 $("#spaceFrm").submit(function(){
-	
-	//빈칸이면 입력 요구
 	if($("[name=spaceName]").val() == ""){
 		swal("공간이름을 입력해주세요.")
 		.then((value) => {
@@ -657,8 +593,6 @@ $("#spaceFrm").submit(function(){
 		});
 		return false;
 	} 
-
-	//시간배열 넣기
 	var arr = ['월','화','수','목','금','토','일'];
 	var str = "";
 	for(var i=0; i<7; i++){
@@ -676,17 +610,15 @@ $("#spaceFrm").submit(function(){
 		$('html, body').animate({scrollTop : $("#time").offset().top}, 100);
 	    return false;
 	}
-
 	return true;
 });
-//이미지 미리보기
+
 $(function() {
     $(".upFile").on('change', function(){
         readURL(this);
     });
 });
 function readURL(input) {
-	console.log($(input).hasClass('f0'));
     if (input.files && input.files[0] && $(input).hasClass('f0') ) {
        var reader = new FileReader();
        reader.onload = function (e) {
@@ -714,5 +646,4 @@ function readURL(input) {
 }
 
 </script>
-<!-- 컨텐츠 끝 -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

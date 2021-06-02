@@ -14,7 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Board implements Serializable {
-	
+
 	private String boardNo;
 	private String boardRef;
 	private String boardName;

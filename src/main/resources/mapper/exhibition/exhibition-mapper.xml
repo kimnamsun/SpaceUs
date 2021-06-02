@@ -85,7 +85,6 @@ from space S join(
 		tag
 </select>
 
-<!-- resultMap -->
 <resultMap type="SpaceList" id="SpaceListMap">
 </resultMap>
 

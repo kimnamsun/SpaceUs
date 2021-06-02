@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%-- 한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8" />
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
  
@@ -83,7 +82,6 @@ conversation.setAttributes({
 </script>
 <div class="skin-default-dark fixed-layout">
     <div id="main-wrapper">
-        <!-- 마이페이지 헤더 -->
         <header class="topbar">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header">
@@ -100,8 +98,6 @@ conversation.setAttributes({
                </div>
             </nav>
         </header>
-        
-        <!-- 왼쪽 목록들 -->
         <sec:authorize access="hasAnyRole('USER', 'HOST')">
 	        <aside class="left-sidebar">
 	            <div class="d-flex no-block nav-text-box align-items-center">
@@ -109,9 +105,7 @@ conversation.setAttributes({
 	                <a class="waves-effect waves-dark ml-auto hidden-sm-down" href="javascript:void(0)"><i class="ti-menu"></i></a>
 	                <a class="nav-toggler waves-effect waves-dark ml-auto hidden-sm-up" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
 	            </div>
-	            <!-- Sidebar scroll-->
 	            <div class="scroll-sidebar">
-	                <!-- Sidebar navigation-->
 	                <nav class="sidebar-nav">
 	 					<ul id="sidebarnav">
 	                        <li> <a class="waves-effect waves-dark" aria-expanded="false" href="${pageContext.request.contextPath }/member/memberProfile.do"><i class="fa fa-user"></i><span class="hide-menu">회원 정보</span></a></li>
@@ -122,9 +116,6 @@ conversation.setAttributes({
 	                        <li> <a class="waves-effect waves-dark" aria-expanded="false" href="${pageContext.request.contextPath }/member/stampEvent.do"><i class="fa fa-stamp"></i><span class="hide-menu"></span>출석 체크</a></li>
 	                    </ul>
 	                </nav>
-	                <!-- End Sidebar navigation -->
 	            </div>
-	            <!-- End Sidebar scroll-->
 	        </aside>
         </sec:authorize>
-        <!-- 목록 끝 -->

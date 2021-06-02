@@ -120,11 +120,4 @@ public class RecruitServiceImpl implements RecruitService{
 	public int selectRecruitTotalHeader(String header) {
 		return recruitDAO.selectRecruitTotalHeader(header);
 	}
-
-
-
-
-
-	
-
 }
